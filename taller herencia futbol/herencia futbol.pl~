@@ -27,14 +27,16 @@ eq(edith,millonarios).
 eq(miguel,santafe).
 
 
-es(edith,defensa).
-es(miguel,delantero).
+inst(edith,defensa).
+inst(miguel,delantero).
 
+
+cual(N,Pos):- inst(N,Pos).
+cual(N,Pos):- inst(N,Pos2),cualEs(Pos2,Pos).
+
+cualEs(N,Pos):- es(N,Pos).
+cualEs(N,Pos):- es(N,Pos2),cualEs(Pos2,Pos).
 /*
-cual(N,Pos):- es(N,Pos).
-cual(N,Pos):- es(N,Pos2),cual(Pos2,Pos).
-
-
 goles(Nombre,Ngoles):-
     cual(Nombre,P),cGoles(P,Ngoles).
 
@@ -44,14 +46,14 @@ equipo(Nombre,Equipo):-
     %inst(Nombre,Pos),
     eq(Nombre,Equipo).
 */
-/*
+%/*este ya esta completamente funcional
 goles(Nombre,Ngoles):-
-    inst(Nombre,Pos),contiene(Pos,Ngoles).
+    es(Nombre,Pos),contiene(Pos,Ngoles).
 altura(Nombre,Altura):-
-    inst(Nombre,Pos),es(Pos,Pos2),contiene(Pos2,Altura,_).
+    es(Nombre,Pos),es(Pos,Pos2),contiene(Pos2,Altura,_).
 equipo(Nombre,Equipo):-
     %inst(Nombre,Pos),
     eq(Nombre,Equipo).
-*/
+%*/
 
 
