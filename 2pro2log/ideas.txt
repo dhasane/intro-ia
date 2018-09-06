@@ -1,0 +1,7 @@
+
+estructuras 
+	-> variable generica en la que tiene una lista, se especifica la cantidad de sub variables que tiene
+	-> axioma: conjunto de variables
+
+el usuario es el que especifica la relacion entre variables de un axioma, pero se busca en la base de datos 
+general para encontrar relaciones entre axiomas 
