@@ -11,14 +11,26 @@ class Tipo{
 	
 	public:
 		
-	string nombre;
-	Tipo *significado; // solo apunta en caso de coenzar con mayuscula nombre
+	char * nombre; // solo apunta en caso de comenzar con mayuscula nombre
 	
+//	inicializador
 	Tipo(string nom)
 	{
-		this->nombre = nom;
+		this->nombre = new char[nom.length()+1];
+		strcpy(this->nombre , nom.c_str());
+	}
+	
+//	copia un valor de otro Tipo, solo en caso de este ser una variable (mayuscula)
+	void copiar(Tipo t)
+	{
+		if(nombre[0] > 64 && nombre[0] < 91)
+		{
+			nombre = t.nombre;
+		}
 	}
 };
+
+
 class Axioma{
 	
 	//private:
@@ -35,6 +47,7 @@ class Axioma{
 	
 	public:
 	
+//	inicializador
 	Axioma( string nom, vector<Tipo> val)
 	{
 		this->nombre  = nom;
@@ -48,6 +61,7 @@ class Axioma{
 		
 	}
 	
+//	imprime el axioma
 	void imprimir()
 	{
 		
@@ -70,6 +84,9 @@ class Conjunto
 	public:
 	vector<Axioma> conjunto;
 	
+//	ingresa un axioma nuevo solo en caso de que o sea con un nombre nuevo
+//  o tenga la misma cantidad de argumentos que el axioma con el mismo nombre
+//  retorna verdadero si logro ingresar el axioma
 	bool ingresar(string nom, vector<Tipo> val)
 	{
 		Axioma ax(nom,val);
@@ -96,6 +113,8 @@ class Conjunto
 		return ret;
 	}
 	
+	
+//	imprime el conjunto de axiomas
 	void imprimir()
 	{
 		vector<Axioma>::iterator it;// = this->valores.begin();
@@ -131,6 +150,9 @@ int main()
 	
 	val.push_back(Tipo("mer"));
 	val.push_back(Tipo("meree"));
+	
+	
+	
 	conj.ingresar("conquistador",val);
 	
 	
