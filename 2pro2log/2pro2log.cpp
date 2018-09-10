@@ -83,7 +83,6 @@ class Tipo{
 	}*/
 };
 
-
 class Axioma{
 	
 	//private:
@@ -246,6 +245,11 @@ class Conjunto
 };
 
 // axioma(tipo,tipo,tipo)
+
+
+//void insertarAList
+
+
 int main()
 {
 	
@@ -260,8 +264,9 @@ int main()
 	
 	Conjunto conj;
 	
+	val.clear();
 	val.push_back(Tipo("marco"));
-	val.push_back(Tipo("roma"));
+	val.push_back(Tipo("rusia"));
 	val.push_back(Tipo("hola"));
 	conj.ingresar("conquistador" ,val);
 	
@@ -271,6 +276,11 @@ int main()
 	val.push_back(Tipo("hola"));
 	conj.ingresar("conquistador",val);
 	
+	val.clear();
+	val.push_back(Tipo("marco"));
+	val.push_back(Tipo("roma"));
+	val.push_back(Tipo("hola"));
+	conj.ingresar("conquistador" ,val);
 	
 	val.clear();
 	val.push_back(Tipo("mao"));
