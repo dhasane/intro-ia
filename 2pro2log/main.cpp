@@ -177,7 +177,7 @@ class Axioma{
         int cantidadAxiomas = causas.size();
         int cantidadVerdades = 0;
         while(it1 != causas.end()){
-            Axioma* axiomaComprobar = new Axioma(); //Asignarle el axioma
+            Axioma* axiomaComprobar = &(*it1); //Asignarle el axioma
 
             if(comprobarSiEsta(axiomaComprobar,variable) == true){
                 cantidadVerdades++;
