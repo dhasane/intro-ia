@@ -339,11 +339,13 @@ Conjunto leerLinea(Conjunto set, string linea){
 		while(linea[b] != ')' && b < end)
 			b++;
 
+		cout<<linea.substr(a,b+1)<<endl;
 		if(linea[b] == ')'){
 			b++;
-			cout<<linea.substr(a,b)<<endl;
 			set = leerLineaSimple(set,linea.substr(a,b));
 			b++;
+			while(linea[b] == ' ')
+				b++;
 		}
 	}
 
