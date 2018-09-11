@@ -91,7 +91,7 @@ class Axioma{
 	string nombre;
 	int ndatos;
 	vector<Tipo> valores; 
-	// Ej: del axioma conquistador(marco,roma)  nombre = conquistador  ,  valores = [marco,roma] con ndatos = 2 (el tamaño de la lista valores)
+	// Ej: del axioma conquistador(marco,roma)  nombre = conquistador  ,  valores = [marco,roma] con ndatos = 2 (el tamaÃ±o de la lista valores)
 	
 	// se terminaria creando como : 
 	// axioma(conquistador, [marco, roma] )
@@ -249,6 +249,7 @@ class Conjunto
 
 //void insertarAList
 
+Conjunto leerLineaSimple(Conjunto set);
 
 int main()
 {
@@ -299,4 +300,32 @@ int main()
 	
 	
 	return 0;
+}
+
+Conjunto leerLineaSimple(Conjunto set){
+	string linea;
+	cout<<"Ingrese algo: \n >";
+	cin>>linea;
+
+	int a = 0, b = 0, end = linea.size();
+
+	while(linea[b] != '(' && b < end)
+		b++;
+
+	string name = linea.substr(a,b);
+	b++;
+
+	vector<Tipo> fields;
+
+	while(a+b < end){
+		a = a+b;
+		b = 0;
+		while(linea[a+b] != ',' && linea[a+b] != ')' && a+b < end)
+			b++;
+
+		fields.push_back(Tipo(linea.substr(a,b)));
+		b++;
+	}
+	set.ingresar(name,fields);
+	return set;
 }
