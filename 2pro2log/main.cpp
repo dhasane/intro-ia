@@ -168,9 +168,11 @@ class Axioma{
         this->causas = causas;
 	}
 
-
-	bool comprobarAxiomas(string variable){
-        vector<Axioma>::iterator it1 = this->causas.begin();
+//Sirve con solo un parametro pompeyano(a) -> romano(a)     -romano tiene A, por lo que fucionaria
+//Falta con dos o mas parametros: gobernante(Y)^hombre(X)->odia(x,Y)       -Odia tiene X y Y
+	bool comprobarAxiomas(Axioma* axioma, string variable){
+	    //Al principio se pasaria el que se quiere mirar ej: romano(a)
+        vector<Axioma>::iterator it1 = axioma->causas.begin();
 
         int cantidadAxiomas = causas.size();
         int cantidadVerdades = 0;
@@ -205,7 +207,7 @@ class Axioma{
             }
         }
         else{
-            return comprobarAxiomas(buscar);
+            return comprobarAxiomas(axioma,buscar);
         }
 
 
