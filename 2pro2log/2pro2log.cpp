@@ -113,6 +113,7 @@ class Tupla{
 	string nombre;
 	int ndatos;
 	vector<Value> valores;
+	
 	// Ej: del axioma conquistador(marco,roma)  nombre = conquistador  ,  valores = [marco,roma] con ndatos = 2 (el tamaño de la lista valores)
 
 	// se terminaria creando como :
@@ -295,7 +296,7 @@ class Tupla{
 class Linea
 {
 	public:
-	vector<Tupla> axiomas;
+	vector<Tupla> tuplas;
 	//vector<Value> variables;
 
 //	ingresa un axioma nuevo solo en caso de que o sea con un nombre nuevo
@@ -310,7 +311,7 @@ class Linea
 
 		bool ret = true;
 
-		for(it = this->axiomas.begin(); it != this->axiomas.end(); it++ )
+		for(it = this->tuplas.begin(); it != this->tuplas.end(); it++ )
 		{
   		  	// en caso de que tengan el mismo nombre, pero diferente cantidad de argumentos, no se agregara a la lista
         	if( it->nombre == ax.nombre && it->ndatos != ax.ndatos)
@@ -322,19 +323,19 @@ class Linea
 
 		if(ret)
 		{
-			axiomas.push_back(ax);
+			tuplas.push_back(ax);
 		}
 
 		return ret;
 	}
 
-//	imprime los axiomas del predicado
+//	imprime los tuplas del predicado
 	void imprimir()
 	{
 		vector<Tupla>::iterator it;// = this->valores.begin();
 
 
-		for(it = this->axiomas.begin(); it != this->axiomas.end(); it++ )
+		for(it = this->tuplas.begin(); it != this->tuplas.end(); it++ )
 		{
   		  	it->imprimir();
 			cout<<" | ";
@@ -353,10 +354,10 @@ class Linea
 		vector<Tupla>::iterator it2;// = this->valores.begin();
 
 
-		for(it = this->axiomas.begin(); it != this->axiomas.end(); it++ )
+		for(it = this->tuplas.begin(); it != this->tuplas.end(); it++ )
 		{
 //  		  	it->imprimir();
-			for(it2 = cc2.axiomas.begin(); it2 != cc2.axiomas.end(); it2++ )
+			for(it2 = cc2.tuplas.begin(); it2 != cc2.tuplas.end(); it2++ )
 			{
 //  			  	it2->imprimir();
 
@@ -387,17 +388,17 @@ class Linea
 			
 		}
 		
-		if(it + 1 != this->axiomas.end())
+		if(it + 1 != this->tuplas.end())
 		{
 			it++;
 		}
-		if(it2 + 1 != cc2.axiomas.end() )
+		if(it2 + 1 != cc2.tuplas.end() )
 		{
 			it2++;
 			
 		}
 		
-		if(it +1 == this->axiomas.end() && it2 +1  == cc2.axiomas.end() )
+		if(it +1 == this->tuplas.end() && it2 +1  == cc2.tuplas.end() )
 		{
 			cout<<endl<<"fin"<<endl;
 		}
@@ -417,8 +418,8 @@ class Linea
 	void buscarDatos( Linea &cc2 )
 	{
 		vector<Value> variables;
-		vector<Tupla>::iterator it = this->axiomas.begin();
-		vector<Tupla>::iterator it2 = cc2.axiomas.begin();
+		vector<Tupla>::iterator it = this->tuplas.begin();
+		vector<Tupla>::iterator it2 = cc2.tuplas.begin();
 		
 		buscDatos(it,it2 ,cc2, &variables);
 	}
@@ -476,7 +477,7 @@ class Linea
 
 class Conjunto{
 	
-	vector<Linea> predicados;
+	vector<Linea> lineas;
 	
 	public:
 	
@@ -486,26 +487,26 @@ class Conjunto{
 	
 	void imprimir()
 	{
-		for(int a = 0 ; a < predicados.size() ; a++)
+		for(int a = 0 ; a < lineas.size() ; a++)
 		{
-			predicados[a].imprimir();
+			lineas[a].imprimir();
 			cout<<endl;
 		}
 	}
 	
 	void ingresar(Linea pred)
 	{
-		predicados.push_back(pred);
+		lineas.push_back(pred);
 	}
 	
 	void rellenarDatos()
 	{
-		for(int a = 0 ; a < predicados.size() ; a++)
+		for(int a = 0 ; a < lineas.size() ; a++)
 		{
-			for(int b = 0 ; b < predicados.size() ; b++)
+			for(int b = 0 ; b < lineas.size() ; b++)
 			{
-				predicados[a].buscarDatos(predicados[b]);
-				//rellenarDatosFB(predicados[b]);
+				lineas[a].buscarDatos(lineas[b]);
+				//rellenarDatosFB(lineas[b]);
 			}
 		}
 	}
@@ -616,7 +617,7 @@ int main()
 */
 	
 	int numpred = 0 ;
-	cout<<"cantidad de predicados a ingresar :";
+	cout<<"cantidad de lineas a ingresar :";
 	cin>>numpred;
 	
 	
