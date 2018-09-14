@@ -351,6 +351,7 @@ int main(){
 		}
 
 		for(unsigned int i=0;i<all.predicados.size();i++){
+			cout<<"\t Mostrando los axiomas y variables del predicado #"<<i<<":"<<endl;
 			all.predicados[i].show();
 		}
 	}
