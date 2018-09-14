@@ -1,0 +1,288 @@
+/*
+Indice:
+	Class Value
+	Class Axioma
+	Class Predicado
+	leerLineaSimple
+	leerLinea
+	addAxioma
+	addPredicado
+	main
+ */
+
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+vector<vector<string> > leerLinea(string linea);
+vector<string> leerLineaSimple( string linea);
+
+
+/*
+ * Tiene un vector de strings, que son los datos de un axioma simple
+ * Ej. perro(grande) / caracteristica(casa,pintada,roja)
+ * y esta clase solo la tiene la clase Axioma
+ */
+class Value{
+public:
+	vector<string> data;
+
+	Value(vector<string> val){
+		this->data = val;
+	}
+
+	void show(){
+		for(unsigned int i = 0; i < data.size(); i++){
+			if(i == data.size()-1)
+				cout<<  data[i];
+			else
+				cout<<  data[i] << ",";
+		}
+
+	}
+};
+
+/*
+ * Tiene un vector de Valores, que son los datos que se han guardado
+ * hasta el momento del axioma simple, todos son del mismo largo,
+ * un aioma declarado de un solo valor, no se le puede asignar dos
+ * valores en uno solo Ej. 1. perro(grande) y 2. perro(pelo,negro), queda el primero
+ * El nombre, es el identificador único de los axiomas, con el se hace la regla anterior
+ */
+class Axioma{
+public:
+	string nombre;
+	vector<Value> valores;
+
+	Axioma(string nom, vector<string> data){
+		this->nombre  = nom;
+		this->valores.empty();
+		this->add(data);
+	}
+
+	void show(){
+		for(unsigned int i = 0; i < valores.size(); i++){
+			cout<<this->nombre<<"(";
+			valores[i].show();
+			cout<<")"<<endl;
+		}
+	}
+
+	void add(vector<string> val){
+		if(valores.empty()){
+			Value NewData(val);
+			valores.push_back(NewData);
+			return;
+		}
+		else if(val.size() != valores[0].data.size()){
+			cout<<"Error de numero de datos"<<endl;
+			return;
+		}
+		else{
+			Value NewData(val);
+			valores.push_back(NewData);
+			return;
+		}
+	}
+
+};
+
+
+/*
+ * Tiene un vector de axiomas, que son a que axioma está haciendo referencia
+ * El vector de variables, es un vector de enteros, para facil manejo, y funciona así
+ * si le entra "ave(X1),casa(X2),herramienta(X1)" queda en 0,1,0
+ * si le entra "ave(X2),casa(X1),herramienta(X3)" queda en 0,1,2
+ * si le entra "ave(X1),casa(X1),herramienta(X1)" queda en 0,0,0
+ * el numero es solo el identificador de que variables son iguales
+ * Si hay una axioma de multiples variables, se guardan linealmente,
+ * en el mismo orden en el que entran
+ */
+class Predicado{
+public:
+	vector<int> variables;
+	vector<Axioma> axiomas;
+
+	Predicado(vector<Axioma> ax, vector<int> data){
+		this->variables = data;
+		this->axiomas = ax;
+	}
+
+	void show(){
+		for(unsigned int i = 0; i < axiomas.size(); i++){
+			cout<<axiomas[i].nombre<<" -> "<<variables[i]<<endl;
+		}
+	}
+
+};
+
+vector<string> leerLineaSimple(string linea){
+	vector<string> fields;
+	fields.clear();
+	int a = 0, b = 0, end = linea.size();
+
+	while(linea[b] != '(' && b < end)
+		b++;
+
+	fields.push_back(linea.substr(a,b));
+	b++;
+
+
+	while(a+b < end){
+		a = a+b;
+		b = 0;
+		while(linea[a+b] != ',' && linea[a+b] != ')' && a+b < end)
+			b++;
+
+		fields.push_back(linea.substr(a,b));
+		b++;
+	}
+	return fields;
+}
+
+vector<vector<string> > leerLinea(string linea){
+
+	vector<vector<string> > complex;
+	complex.clear();
+	int a = 0, b = 0, end = linea.size();
+
+	while(a+b < end){
+		a += b;
+		b = 0;
+		while(linea[a+b] != ')' && b < end){
+			b++;
+		}
+
+		if(linea[a+b] == ')'){
+			b++;
+			complex.push_back(leerLineaSimple(linea.substr(a,b)));
+
+			b++;
+			while(linea[a+b] == ' ')
+				b++;
+		}
+	}
+	return complex;
+}
+
+vector<Axioma> addAxioma(vector<string> sample, vector<Axioma> axiomas){
+	vector<string> sub;
+	for(unsigned int i=1;i<sample.size();i++)
+		sub.push_back(sample[i]);
+
+	for(unsigned int i=0;i<axiomas.size();i++){
+		if(axiomas[i].nombre == sample[0]){
+			axiomas[i].add(sub);
+			return axiomas;
+		}
+	}
+
+	Axioma aux(sample[0],sub);
+	axiomas.push_back(aux);
+	return axiomas;
+}
+
+vector<Predicado> addPredicado(vector<vector<string> > complex, vector<Predicado> predicados, vector<Axioma> axiomas){
+	vector<unsigned int> marks;
+	for(unsigned int k=0;k<complex.size();k++){
+		for(unsigned int j=0;j<axiomas.size();j++){
+			if(complex[k][0] == axiomas[j].nombre){
+				marks.push_back(j);
+			}
+		}
+	}
+
+	if(marks.size() != complex.size()){
+		cout<<"ERROR, alguno de los axiomas no existe";
+		return predicados;
+	}
+
+	vector<int> valoresVariable;
+	map<string,int> mapa;
+	int cont = 0;
+	for(unsigned int k=0;k<complex.size();k++){
+		for(unsigned int i=1;i<complex[k].size();i++){
+			if ( mapa.find(complex[k][i]) == mapa.end() ) {
+				// La variable aun no aparecía
+				mapa[complex[k][i]] = cont;
+				cont++;
+			}
+			valoresVariable.push_back(mapa[complex[k][i]]);
+		}
+	}
+	vector<Axioma> daBoss;
+	for(unsigned int i=0;i<marks.size();i++)
+		daBoss.push_back((axiomas[marks[i]]));
+	Predicado pred(daBoss,valoresVariable);
+	predicados.push_back(pred);
+	return predicados;
+}
+
+// MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN
+int main(){
+	vector<Axioma> axiomasBase;
+	vector<Predicado> predicados;
+	vector<vector<string> > input;
+	vector<string> sample, sub;
+
+	string line;
+	//	cin>>line;
+	line = "ave(X1),herramienta(X2)";
+	input = leerLinea(line);
+
+
+	sample = leerLineaSimple("ave(pollo)");
+	axiomasBase = addAxioma(sample,axiomasBase);
+
+	sample = leerLineaSimple("ave(canario)");
+	axiomasBase = addAxioma(sample,axiomasBase);
+
+	sample = leerLineaSimple("ave(aguila)");
+	axiomasBase = addAxioma(sample,axiomasBase);
+
+	sample = leerLineaSimple("ave(pollo,no)");
+	axiomasBase = addAxioma(sample,axiomasBase);
+
+	sample = leerLineaSimple("herramienta(martillo)");
+	axiomasBase = addAxioma(sample,axiomasBase);
+
+	sample = leerLineaSimple("herramienta(pinzas)");
+	axiomasBase = addAxioma(sample,axiomasBase);
+
+	sample = leerLineaSimple("cosa(roma,tiene,coliseo)");
+	axiomasBase = addAxioma(sample,axiomasBase);
+
+	sample = leerLineaSimple("cosa(egipto,tiene,piramides)");
+	axiomasBase = addAxioma(sample,axiomasBase);
+
+
+	for(unsigned int i=0;i<axiomasBase.size();i++){
+		cout<<"\t Mostrando los datos del axioma #"<<i<<":"<<endl;
+		axiomasBase[i].show();
+	}
+
+	predicados = addPredicado(input,predicados,axiomasBase);
+	predicados[0].show();
+
+	/*
+	// Aqui va lo que debería correr en condiciones nomales, sigan el ejemplo
+	while(true){
+		string line;
+		cin>>line;
+		input = leerLinea(line);
+		if(input.size()==1){
+			axiomasBase = addAxioma(input[0],axiomasBase);
+		}
+		else{
+			predicados = addPredicado(input,predicados,axiomasBase);
+		}
+	}
+	 */
+
+	return 0;
+}
+
