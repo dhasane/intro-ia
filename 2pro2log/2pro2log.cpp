@@ -31,43 +31,56 @@ bool comparar(char* cc1, char* cc2)
 
 }
 
-class Tipo{
+class Value{
 
 	public:
 
-	char * nombre;
-	string nomVar;
+	//char * nombre;
+	string nombre;
 	bool esVar; // guarda en caso de ser variable
 	
-	Tipo()
+	vector<string> posibles;
+	
+	Value()
 	{
 	}
 	
 //	inicializador
-	Tipo(string nom)
+	Value(string nom)
 	{
 		this->nombre = new char[nom.length()+1];
-		strcpy(this->nombre , nom.c_str());
-		//this->nombre = nom);
+		//strcpy(this->nombre , nom.c_str());
+		this->nombre = nom;
 
 		if (nombre[0] > 64 && nombre[0] < 91)
 		{
 			esVar = true;
-			nomVar = this->nombre;
+			//nomVar = this->nombre;
 		}
 		else
 		{
 			esVar = false;
-			nomVar = " ";
+			//nomVar = " ";
 		}
 	}
-
-//	copia un valor de otro Tipo, solo en caso de este ser una variable (mayuscula)
-	bool copiar(Tipo t)
+	
+	bool compararNombre(Value v2)
+	{
+		//if(comparar( this->nombre , v2.nombre ) )
+		if(this->nombre == (v2.nombre))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+//	copia un valor de otro Value, solo en caso de este ser una variable (mayuscula)
+	bool copiar(Value t)
 	{
 		if(esVar && !t.esVar)
 		{
-			nombre = t.nombre;
+			posibles.push_back(t.nombre);
+			//nombre = t.nombre;
 			return true;
 		}
 		
@@ -75,7 +88,7 @@ class Tipo{
 	}
 
 //	compara dos nombres
-	/*bool comparar(Tipo tt)
+	/*bool comparar(Value tt)
 	{
 //		cout<<"-------"<<endl;
 		int tam = strlen(this->nombre);
@@ -92,14 +105,14 @@ class Tipo{
 	}*/
 };
 
-class Axioma{
+class Tupla{
 
 	//private:
 	public:
 
 	string nombre;
 	int ndatos;
-	vector<Tipo> valores;
+	vector<Value> valores;
 	// Ej: del axioma conquistador(marco,roma)  nombre = conquistador  ,  valores = [marco,roma] con ndatos = 2 (el tamaño de la lista valores)
 
 	// se terminaria creando como :
@@ -109,7 +122,7 @@ class Axioma{
 	public:
 
 //	inicializador
-	Axioma( string nom, vector<Tipo> val)
+	Tupla( string nom, vector<Value> val)
 	{
 		this->nombre  = nom;
 
@@ -124,19 +137,46 @@ class Axioma{
 	{
 
 		cout<<this->nombre<<" : ";
-		vector<Tipo>::iterator it;// = this->valores.begin();
+		vector<Value>::iterator it;// = this->valores.begin();
 
 		for(it = this->valores.begin(); it != this->valores.end(); it++ )
 		{
-        	cout<<  it->nombre << ", ";
+			if(it->esVar && it->posibles.size()>0)
+			{
+				Value vv = * it;
+				cout<<  vv.nombre<<":(";
+				
+				vector<Value>::iterator itn;
+				for(int a = 0 ; a < vv.posibles.size() ; a ++)
+				{
+					Value subVal = vv.posibles[a];
+					cout<< subVal.nombre;
+					
+					if( a+1 == vv.posibles.size() - 1)
+					{
+						cout<<", ";
+					}
+				}
+				
+				
+				cout << ") ";
+			}
+			else
+			{
+				cout<<  it->nombre ;
+			}
+			
+			
+			if( it + 1 != this->valores.end())cout<< ", ";
+        	
 		}
 	}
 
 //	compara los dos axiomas y en caso que uno de estos tenga variabes, = > copia los datos de dato a Variable
-	bool rellenarDatos(Axioma ax2 , vector<Tipo> *variables)
+	bool rellenarDatos(Tupla ax2 , vector<Value> *variables)
 	{
-		vector<Tipo>::iterator it;
-		vector<Tipo>::iterator it2;
+		vector<Value>::iterator it;
+		vector<Value>::iterator it2;
 
 		
 		it = this->valores.begin();
@@ -147,16 +187,16 @@ class Axioma{
 		int cantidadVariables = 0 ;
 		
 		
-		if(compararAxiomas(ax2))
+		if(compararTuplas(ax2))
 		{
 			for( it,it2 ; it2 != ax2.valores.end() ,it != this->valores.end(); it++ ,it2++ )
 			{
 				if(it->copiar(*it2)) 
 				{
 					cantidadVariables++;
-					
+					/*
 					cout<<it->nomVar<<" : "<<it2->nombre<<endl;
-					Tipo nvar;
+					Value nvar;
 					nvar.nomVar = it->nomVar;
 					nvar.nombre = it2->nombre;
 					nvar.esVar = false;
@@ -165,7 +205,7 @@ class Axioma{
 					{
 						nVars++;
 					}
-					
+					*/
 				}
 			}
 		}
@@ -187,16 +227,16 @@ class Axioma{
 	// en caso de estar, pero tener un nombre(valor) distinto, retorna false
 	// si tiene nombre igual retorna true 
 	// en caso de no estar presente, ingresa la variable a la lista 
-	bool enVariables(Tipo &tipo , vector<Tipo> *vars)
+	bool enVariables(Value &tipo , vector<Value> *vars)
 	{
 		
-		vector<Tipo>::iterator it = vars->begin();
+		vector<Value>::iterator it = vars->begin();
 		bool presente = false;
 		//bool ret = false;
 		
 		for(it ; it != vars->end() ; it ++)
 		{
-			if(it->nomVar == tipo.nomVar ) 
+			if(it->nombre == tipo.nombre ) 
 			{
 				
 				if ( it->nombre != tipo.nombre)
@@ -216,11 +256,11 @@ class Axioma{
 		
 		return true;
 	}
-	bool compararAxiomas(Axioma ax2)
+	bool compararTuplas(Tupla ax2)
 	{
 		
-		vector<Tipo>::iterator it;
-		vector<Tipo>::iterator it2;
+		vector<Value>::iterator it;
+		vector<Value>::iterator it2;
 
 		
 		//bool vabien = true;
@@ -234,7 +274,7 @@ class Axioma{
 		for( it,it2 ; it2 != ax2.valores.end() ,it != this->valores.end(); it++ ,it2++ )
 		{
 
-			if ( !  ( (it->esVar)  || (it2->esVar) ) &&  !comparar( it->nombre , it2->nombre )  )
+			if ( !  ( (it->esVar)  || (it2->esVar) ) &&  !it->compararNombre(*it2)  )
 			{
 				return false;
 				//it == this->valores.end();
@@ -252,21 +292,21 @@ class Axioma{
 	
 };
 
-class Predicado
+class Linea
 {
 	public:
-	vector<Axioma> axiomas;
-	//vector<Tipo> variables;
+	vector<Tupla> axiomas;
+	//vector<Value> variables;
 
 //	ingresa un axioma nuevo solo en caso de que o sea con un nombre nuevo
 //  o tenga la misma cantidad de argumentos que el axioma con el mismo nombre
 //  retorna verdadero si logro ingresar el axioma
 
-	bool ingresar(string nom, vector<Tipo> val)
+	bool ingresar(string nom, vector<Value> val)
 	{
-		Axioma ax(nom,val);
+		Tupla ax(nom,val);
 
-		vector<Axioma>::iterator it;// = this->valores.begin();
+		vector<Tupla>::iterator it;// = this->valores.begin();
 
 		bool ret = true;
 
@@ -291,7 +331,7 @@ class Predicado
 //	imprime los axiomas del predicado
 	void imprimir()
 	{
-		vector<Axioma>::iterator it;// = this->valores.begin();
+		vector<Tupla>::iterator it;// = this->valores.begin();
 
 
 		for(it = this->axiomas.begin(); it != this->axiomas.end(); it++ )
@@ -305,12 +345,12 @@ class Predicado
 	/*
 //	esta es la funcion que debera ser con recursividad, por ahora esta con fuerza bruta, para probar funcionaiento de
 //	otras funciones
-	void rellenarDatosFB(Predicado cc2)
+	void rellenarDatosFB(Linea cc2)
 	{
-		vector<Axioma>::iterator it;// = this->valores.begin();
+		vector<Tupla>::iterator it;// = this->valores.begin();
 
 
-		vector<Axioma>::iterator it2;// = this->valores.begin();
+		vector<Tupla>::iterator it2;// = this->valores.begin();
 
 
 		for(it = this->axiomas.begin(); it != this->axiomas.end(); it++ )
@@ -330,7 +370,7 @@ class Predicado
 	}
 */
 	
-	void buscDatos(vector<Axioma>::iterator it, vector<Axioma>::iterator it2 , Predicado &cc2 , vector<Tipo> *variables)
+	void buscDatos(vector<Tupla>::iterator it, vector<Tupla>::iterator it2 , Linea &cc2 , vector<Value> *variables)
 	{
 		
 
@@ -374,11 +414,11 @@ class Predicado
 
 	}
 	
-	void buscarDatos( Predicado &cc2 )
+	void buscarDatos( Linea &cc2 )
 	{
-		vector<Tipo> variables;
-		vector<Axioma>::iterator it = this->axiomas.begin();
-		vector<Axioma>::iterator it2 = cc2.axiomas.begin();
+		vector<Value> variables;
+		vector<Tupla>::iterator it = this->axiomas.begin();
+		vector<Tupla>::iterator it2 = cc2.axiomas.begin();
 		
 		buscDatos(it,it2 ,cc2, &variables);
 	}
@@ -387,15 +427,15 @@ class Predicado
 	/*
 //Sirve con solo un parametro pompeyano(a) -> romano(a)     -romano tiene A, por lo que fucionaria
 //Falta con dos o mas parametros: gobernante(Y)^hombre(X)->odia(x,Y)       -Odia tiene X y Y
-	bool comprobarAxiomas(Axioma* axioma, string variable){
+	bool comprobarTuplas(Tupla* axioma, string variable){
 	    //Al principio se pasaria el que se quiere mirar ej: romano(a)
 		
-        vector<Axioma>::iterator it1 = axioma->causas.begin();
+        vector<Tupla>::iterator it1 = axioma->causas.begin();
 
-        int cantidadAxiomas = causas.size();
+        int cantidadTuplas = causas.size();
         int cantidadVerdades = 0;
         while(it1 != causas.end()){
-            Axioma* axiomaComprobar = &(*it1); //Asignarle el axioma
+            Tupla* axiomaComprobar = &(*it1); //Asignarle el axioma
 
             if(comprobarSiEsta(axiomaComprobar,variable) == true){
                 cantidadVerdades++;
@@ -403,7 +443,7 @@ class Predicado
             it1++;
         }
 
-        if(cantidadAxiomas == cantidadVerdades){
+        if(cantidadTuplas == cantidadVerdades){
             comprobacion = true;
         }
         else{
@@ -413,9 +453,9 @@ class Predicado
         return comprobacion;
 	}
 
-    bool comprobarSiEsta(Axioma* axioma, string buscar){
+    bool comprobarSiEsta(Tupla* axioma, string buscar){
         if(axioma->causas.size() == 0){
-            vector<Tipo>:: iterator it1 = axioma->valores.begin();
+            vector<Value>:: iterator it1 = axioma->valores.begin();
 
             while(it1 != valores.end()){
                 if(buscar == it1->nombre){
@@ -425,7 +465,7 @@ class Predicado
             }
         }
         else{
-            return comprobarAxiomas(axioma,buscar);
+            return comprobarTuplas(axioma,buscar);
         }
 
 
@@ -434,10 +474,9 @@ class Predicado
 
 };
 
-
 class Conjunto{
 	
-	vector<Predicado> predicados;
+	vector<Linea> predicados;
 	
 	public:
 	
@@ -454,7 +493,7 @@ class Conjunto{
 		}
 	}
 	
-	void ingresar(Predicado pred)
+	void ingresar(Linea pred)
 	{
 		predicados.push_back(pred);
 	}
@@ -473,7 +512,7 @@ class Conjunto{
 	
 	
 	
-	Predicado leerLineaSimple(Predicado set, string linea){
+	Linea leerLineaSimple(Linea set, string linea){
 
 		int a = 0, b = 0, end = linea.size();
 
@@ -483,7 +522,7 @@ class Conjunto{
 		string name = linea.substr(a,b);
 		b++;
 
-		vector<Tipo> fields;
+		vector<Value> fields;
 
 		while(a+b < end){
 			a = a+b;
@@ -491,14 +530,14 @@ class Conjunto{
 			while(linea[a+b] != ',' && linea[a+b] != ')' && a+b < end)
 				b++;
 	
-			fields.push_back(Tipo(linea.substr(a,b)));
+			fields.push_back(Value(linea.substr(a,b)));
 			b++;
 		}
 		set.ingresar(name,fields);
 		return set;
 	}
 
-	Predicado leerLinea(Predicado set, string linea){
+	Linea leerLinea(Linea set, string linea){
 
 		int a = 0, b = 0, end = linea.size();
 
@@ -522,7 +561,7 @@ class Conjunto{
 	
 	void ingresarLinea(string linea)
 	{
-		Predicado pred;
+		Linea pred;
 		pred = leerLinea(pred,linea);
 		ingresar(pred);
 	}
@@ -535,15 +574,15 @@ class Conjunto{
 
 //void insertarAList
 
-Predicado leerLinea(Predicado set, string linea);
-Predicado leerLineaSimple(Predicado set, string linea);
+Linea leerLinea(Linea set, string linea);
+Linea leerLineaSimple(Linea set, string linea);
 
 int main()
 {
 
 	//cout<< "hola"<<endl;
 	//string val[] = {"marco","roma"};
-	//vector<Tipo> val;
+	//vector<Value> val;
 
 
 //	cout<< sizeof(val)/sizeof(*val)<<endl<<endl;
@@ -553,26 +592,26 @@ int main()
 	Conjunto conj;
 
 	/*val.clear();
-	val.push_back(Tipo("marco"));
-	val.push_back(Tipo("rusia"));
-	val.push_back(Tipo("hola"));
+	val.push_back(Value("marco"));
+	val.push_back(Value("rusia"));
+	val.push_back(Value("hola"));
 	conj.ingresar("conquistador" ,val);
 
 	val.clear();
-	val.push_back(Tipo("marco"));
-	val.push_back(Tipo("M"));
-	val.push_back(Tipo("hola"));
+	val.push_back(Value("marco"));
+	val.push_back(Value("M"));
+	val.push_back(Value("hola"));
 	conj.ingresar("conquistador",val);
 
 	val.clear();
-	val.push_back(Tipo("marco"));
-	val.push_back(Tipo("roma"));
-	val.push_back(Tipo("hola"));
+	val.push_back(Value("marco"));
+	val.push_back(Value("roma"));
+	val.push_back(Value("hola"));
 	conj.ingresar("conquistador" ,val);
 
 	val.clear();
-	val.push_back(Tipo("mao"));
-	val.push_back(Tipo("M"));
+	val.push_back(Value("mao"));
+	val.push_back(Value("M"));
 	conj.ingresar("conq",val);
 */
 	
