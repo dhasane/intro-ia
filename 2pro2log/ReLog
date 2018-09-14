@@ -1,7 +1,6 @@
 /* TODO:
  * Validacion en numero de argumentos de los axiomas del predicado
  * verificar variables y valores del predicado
- * arreglar el show de predicado
 Indice:
 	Class Value
 	Class Axioma
@@ -335,7 +334,7 @@ int main(){
 		all.predicados[i].show();
 	}
 
-	/*
+
 	// Aqui va lo que debería correr en condiciones nomales, sigan el ejemplo
 	while(true){
 		string line;
@@ -345,19 +344,17 @@ int main(){
 			all.axiomasBase = addAxioma(input[0],all.axiomasBase);
 		}
 		else{
-			all.predicados = addPredicado(input,all);
+			all = addPredicado(input,all);
 		}
 		for(unsigned int i=0;i<all.axiomasBase.size();i++){
-			cout<<"\t Mostrando los datos del axioma #"<<i<<":"<<endl;
 			all.axiomasBase[i].show();
 		}
-		
+
 		for(unsigned int i=0;i<all.predicados.size();i++){
-			cout<<"\t Mostrando los axiomas y variables del predicado #"<<i<<":"<<endl;
 			all.predicados[i].show();
 		}
 	}
-	 */
+
 
 	return 0;
 }
