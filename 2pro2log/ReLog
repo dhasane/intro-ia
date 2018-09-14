@@ -1,4 +1,6 @@
-/*
+/* TODO:
+ * Validacion en numero de argumentos de los axiomas del predicado
+ * crear los fantasmas-> HECHO
 Indice:
 	Class Value
 	Class Axioma
@@ -10,6 +12,7 @@ Indice:
 	main
  */
 
+#include <utility>
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
@@ -57,11 +60,22 @@ class Axioma{
 public:
 	string nombre;
 	vector<Value> valores;
+	unsigned int params;
+	bool espectral;
 
 	Axioma(string nom, vector<string> data){
 		this->nombre  = nom;
 		this->valores.empty();
 		this->add(data);
+		params = valores[0].data.size();
+		this->espectral = false;
+	}
+
+	Axioma(string nom, bool gg, unsigned int nParam){
+		this->nombre  = nom;
+		this->valores.empty();
+		this->params = nParam;
+		this->espectral = true;
 	}
 
 	void show(){
@@ -73,9 +87,10 @@ public:
 	}
 
 	void add(vector<string> val){
-		if(valores.empty()){
+		if(valores.empty() || espectral){
 			Value NewData(val);
 			valores.push_back(NewData);
+			espectral = false;
 			return;
 		}
 		else if(val.size() != valores[0].data.size()){
@@ -169,6 +184,11 @@ vector<vector<string> > leerLinea(string linea){
 	return complex;
 }
 
+/*
+ * Añade un axioma a una lista ya existente de axiomas
+ * Si el nombre del axioma ya existe lo agrega, si no
+ * lo crea como uno nuevo
+ */
 vector<Axioma> addAxioma(vector<string> sample, vector<Axioma> axiomas){
 	vector<string> sub;
 	for(unsigned int i=1;i<sample.size();i++)
@@ -186,21 +206,34 @@ vector<Axioma> addAxioma(vector<string> sample, vector<Axioma> axiomas){
 	return axiomas;
 }
 
-vector<Predicado> addPredicado(vector<vector<string> > complex, vector<Predicado> predicados, vector<Axioma> axiomas){
-	vector<unsigned int> marks;
+/*
+ * Crea el predicado con las reglas descritas en la clase predicado
+ */
+std::pair<vector<Predicado>,vector<Axioma> > addPredicado(vector<vector<string> > complex, vector<Predicado> predicados, vector<Axioma> axiomas){
+
+	// Bloque 1, busca si todos los axiomas del predicado existen, si no existen
+	// crea un axioma fantasma (pendiente por recibir valor)
+	vector<int> marks;
 	for(unsigned int k=0;k<complex.size();k++){
 		for(unsigned int j=0;j<axiomas.size();j++){
 			if(complex[k][0] == axiomas[j].nombre){
 				marks.push_back(j);
 			}
 		}
+		if(marks.size() != k+1){
+			marks.push_back(axiomas.size());
+			Axioma fantasma(complex[k][0],true,complex[k].size()-1);
+			axiomas.push_back(fantasma);
+		}
 	}
 
 	if(marks.size() != complex.size()){
 		cout<<"ERROR, alguno de los axiomas no existe";
-		return predicados;
+		return std::make_pair(predicados,axiomas);
 	}
 
+
+	// Esto crea los numeros mágicos de las variables
 	vector<int> valoresVariable;
 	map<string,int> mapa;
 	int cont = 0;
@@ -214,24 +247,28 @@ vector<Predicado> addPredicado(vector<vector<string> > complex, vector<Predicado
 			valoresVariable.push_back(mapa[complex[k][i]]);
 		}
 	}
+
 	vector<Axioma> daBoss;
 	for(unsigned int i=0;i<marks.size();i++)
 		daBoss.push_back((axiomas[marks[i]]));
 	Predicado pred(daBoss,valoresVariable);
 	predicados.push_back(pred);
-	return predicados;
+	predicados[0].show();
+	return std::make_pair(predicados,axiomas);
 }
 
 // MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN
+// MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN
+// MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN MAIN
 int main(){
-	vector<Axioma> axiomasBase;
-	vector<Predicado> predicados;
+	vector<Axioma> axiomasBase, aux1;
+	vector<Predicado> predicados, aux2;
 	vector<vector<string> > input;
 	vector<string> sample, sub;
 
 	string line;
 	//	cin>>line;
-	line = "ave(X1),herramienta(X2)";
+	line = "ave(X1),gallo(X2)";
 	input = leerLinea(line);
 
 
@@ -259,13 +296,16 @@ int main(){
 	sample = leerLineaSimple("cosa(egipto,tiene,piramides)");
 	axiomasBase = addAxioma(sample,axiomasBase);
 
-
+/*
 	for(unsigned int i=0;i<axiomasBase.size();i++){
 		cout<<"\t Mostrando los datos del axioma #"<<i<<":"<<endl;
 		axiomasBase[i].show();
 	}
-
-	predicados = addPredicado(input,predicados,axiomasBase);
+*/
+	std::make_pair(aux2,aux1) = addPredicado(input,predicados,axiomasBase);
+	predicados = aux2;
+	axiomasBase = aux1;
+	cout<<"n "<<predicados.size()<<endl;
 	predicados[0].show();
 
 	/*
