@@ -83,7 +83,6 @@ class Axioma{
 
 	//private:
 	public:
-
 	string nombre;
 	int ndatos;
 	vector<Tipo> valores;
@@ -173,38 +172,54 @@ class Axioma{
 	bool comprobarAxiomas(Axioma* axioma, string variable){
 	    //Al principio se pasaria el que se quiere mirar ej: romano(a)
         vector<Axioma>::iterator it1 = axioma->causas.begin();
-
         int cantidadAxiomas = causas.size();
         int cantidadVerdades = 0;
-        while(it1 != causas.end()){
-            Axioma* axiomaComprobar = &(*it1); //Asignarle el axioma
+        if(causas.size()>0){
+            while(it1 != causas.end()){
+                Axioma* axiomaComprobar = &(*it1); //Asignarle el axioma
 
-            if(comprobarSiEsta(axiomaComprobar,variable) == true){
-                cantidadVerdades++;
+                if(comprobarSiEsta(axiomaComprobar,variable) == true){
+                    cout<<"verdad"<<axiomaComprobar->nombre<<endl;
+                    cantidadVerdades++;
+                }
+                it1++;
             }
-            it1++;
+
+        }
+        else{
+            vector<Tipo>::iterator it2 = axioma->valores.begin();
+            while(it2 != axioma->valores.end()){
+                cout<<"sss"<<it2->nombre<<endl;
+                if(it2->nombre ==variable){
+                    return true;
+                }
+                it2++;
+            }
+            return false;
         }
 
         if(cantidadAxiomas == cantidadVerdades){
-            comprobacion = true;
-        }
-        else{
-            comprobacion = false;
-        }
-
+                    comprobacion = true;
+                }
+            else{
+                comprobacion = false;
+                }
         return comprobacion;
 	}
 
     bool comprobarSiEsta(Axioma* axioma, string buscar){
         if(axioma->causas.size() == 0){
+            cout<<"tam"<<axioma->nombre<<" "<<axioma->valores.size()<<endl;
             vector<Tipo>:: iterator it1 = axioma->valores.begin();
 
-            while(it1 != valores.end()){
+            while(it1 != axioma->valores.end()){
+                cout<<it1->nombre<<" "<<endl;
                 if(buscar == it1->nombre){
                     return true;
                 }
                 it1++;
             }
+            return false;
         }
         else{
             return comprobarAxiomas(axioma,buscar);
@@ -313,15 +328,22 @@ class Predicado{
 };
 
 class Conjunto{
-
-	vector<Predicado> predicados;
+    public:
+	vector<Axioma> predicados;
 
 	public:
-
 	Conjunto()
 	{
+
+	}
+	void ingresar(Axioma pred)
+	{
+		predicados.push_back(pred);
+
 	}
 
+
+/*
 	void imprimir()
 	{
 		for(int a = 0 ; a < predicados.size() ; a++)
@@ -332,9 +354,10 @@ class Conjunto{
 	}
 
 
-	void ingresar(Predicado pred)
+	void ingresar(Axioma pred)
 	{
 		predicados.push_back(pred);
+
 	}
 
 	void rellenarDatos()
@@ -347,88 +370,254 @@ class Conjunto{
 			}
 		}
 	}
+*/
+	vector<Tipo> listaDe(string nombre){
+        vector<Axioma>:: iterator it = predicados.begin();
+        while(it != predicados.end()){
+            if(it->nombre == nombre){
+                break;
+            }
+            it++;
+        }
+        return it->valores;
+    }
+
+    Axioma* buscarAxioma(char* axioma){
+        vector<Axioma>:: iterator it = predicados.begin();
+        Axioma* a = new Axioma();
+        while(it != predicados.end()){
+            a = &*it;
+            if(a->nombre == axioma){
+                return a;
+            }
+            it++;
+        }
+
+        return a;
+
+    }
+
+    bool existeAxioma(char* axioma){
+        cout<<"entra en existe"<<predicados.size()<<endl;
+        vector<Axioma>:: iterator it = predicados.begin();
+        Axioma* a = new Axioma();
+        while(it != predicados.end()){
+            a = &*it;
+            cout<<a->nombre<<" "<<axioma<<endl;
+            if(a->nombre == axioma){
+                return true;
+            }
+            it++;
+        }
+        cout<<"sale"<<endl;
+        return false;
+
+    }
+
 };
-
-
-// axioma(tipo,tipo,tipo)
-
-
-//void insertarAList
-
 Predicado leerLinea(Predicado set, string linea);
 Predicado leerLineaSimple(Predicado set, string linea);
+vector<char*> leer(char str[]);
+vector<char*> leer2(char* str);
+char* quitarParentesis(char* str);
+vector<char*> separarAxioma(char* axioma);
 
 int main()
 {
+    int cantidadAxiomas;
+    Conjunto conj;
+    char* linea;
+    string cadena;
+    vector<char*> datos;
+    vector<char*> vectorCausas;
+    vector<char*> sinParentesis;
+    //char linea[]= "pompeyano(X),hombre(x)->romano(X)";
+    //Basicos
+    Axioma n;
+        n.nombre = "pompeyano";
+        n.ndatos = 3;
+        n.valores.push_back(Tipo("lucas"));
+        n.valores.push_back(Tipo("marcos"));
+        n.valores.push_back(Tipo("cesar"));
+        n.valores.push_back(Tipo("alguien"));
 
-	//cout<< "hola"<<endl;
-	//string val[] = {"marco","roma"};
-	//vector<Tipo> val;
+        Axioma na;
+        na.nombre = "hombre";
+        na.ndatos = 3;
+        na.valores.push_back(Tipo("marcos"));
+        na.valores.push_back(Tipo("luis"));
+        na.valores.push_back(Tipo("cesar"));
+
+        Axioma v;
+        v.nombre = "nose";
+        v.ndatos = 1;
+        v.valores.push_back(Tipo("cesar"));
+
+        conj.predicados.push_back(n);
+        conj.predicados.push_back(na);
+        conj.predicados.push_back(v);
+
+        cout<<"cuantos axiomas va a ingresar?"<<endl;
+    cin>>cantidadAxiomas;
+    char* valor;
+    char* pasar;
+    string nombreAxioma;
+    bool existe;
+    for(int i=0; i<cantidadAxiomas; i++){
+       Axioma* n2 = NULL;
+       cout<<"Inserte nombre del axioma"<<endl;
+       cin>>nombreAxioma;
+       cout<<"inserte dato"<<endl;
+       cin>>cadena;
+        strcpy(pasar , nombreAxioma.c_str());
+        existe = conj.existeAxioma(pasar);
+        //n2->valores.push_back(Tipo(cadena));
+        if(existe == 0){
+            n2 = new Axioma();
+            n2->nombre = nombreAxioma;
+            n2->valores.push_back(Tipo(cadena));
+            conj.predicados.push_back(*n2);
+
+        }
+        else{
+            n2->valores.push_back(Tipo(cadena));
+            conj.predicados.push_back(*n2);
+        }
+    //    n2.nombre = nombreAxioma;
+
+        //conj.predicados.push_back(n2);
+    }
+    cout<<"total axiomas"<<conj.predicados.size()<<endl;
+    //complejos
+    cout<<"cuantos axiomas complejos va a ingresar?"<<endl;
+    cin>>cantidadAxiomas;
+    if(cantidadAxiomas != 0){
+        for(int i =0; i<cantidadAxiomas; i++){
+            vectorCausas.clear();
+            sinParentesis.clear();
+            datos.clear();
+
+            cin>>cadena;
+            linea = new char[cadena.length()+1];
+            strcpy(linea , cadena.c_str());
+            cout<<linea;
+
+            int cantidadAxiomas;
+            datos = leer(linea);
+            cout<<datos[0]<<" "<<datos[1]<<"´´´´´´´´´´´´´´´"<<conj.predicados.size()<<endl;
+            vectorCausas = leer2(datos[0]);
+
+            int limite = 0;
+            limite = vectorCausas.size()-1;
+            for(int i=0; i<limite; i++){
+                cout<<vectorCausas[i]<<endl;
+                sinParentesis.push_back(quitarParentesis(vectorCausas[i]));
+            }
+
+            Axioma resultado;
+            vector<Axioma> causas;
+            Axioma causa;
+
+            for(int i=0; i<limite; i++){
+                //valores = conj.listaDe(sinParentesis[i]);
+                cout<<"-"<<sinParentesis[i]<<endl;
+                causa.nombre = sinParentesis[i];
+                cout<<"--"<<causa.nombre<<endl;
+                causa.valores = conj.listaDe(sinParentesis[i]);
+                causas.push_back(causa);
+            }
+            resultado.rellenarCausas(causas);
+
+            //Despues del entonces
+            resultado.nombre = quitarParentesis(datos[1]);
+            conj.ingresar(resultado);
+    }
+    }
 
 
-//	cout<< sizeof(val)/sizeof(*val)<<endl<<endl;
-	//string nom = "conquistador";
-
-
-	Conjunto conj;
-
-	/*val.clear();
-	val.push_back(Tipo("marco"));
-	val.push_back(Tipo("rusia"));
-	val.push_back(Tipo("hola"));
-	conj.ingresar("conquistador" ,val);
-	val.clear();
-	val.push_back(Tipo("marco"));
-	val.push_back(Tipo("M"));
-	val.push_back(Tipo("hola"));
-	conj.ingresar("conquistador",val);
-	val.clear();
-	val.push_back(Tipo("marco"));
-	val.push_back(Tipo("roma"));
-	val.push_back(Tipo("hola"));
-	conj.ingresar("conquistador" ,val);
-	val.clear();
-	val.push_back(Tipo("mao"));
-	val.push_back(Tipo("M"));
-	conj.ingresar("conq",val);
-*/
-
-	int numpred = 0 ;
-	cout<<"cantidad de predicados a ingresar :";
-	cin>>numpred;
-
-
-	string line;
-	cout<<"ingrese algo: \n";
-	for(int a = 0 ; a < numpred ; a ++)
-	{
-		Predicado pred;
-
-		cout<<"> ";
-		cin>>line;
-		pred = leerLinea(pred,line);
-		conj.ingresar(pred);
-	}
 
 
 
-	cout<<endl<<endl<<"--------------------------------------------------------"<<endl<<endl;
 
 
+    //if(cantidadAxiomas>0){
+        cin.getline(linea,100);
+        cout<<linea;
+        string c;
+    //}
 
-	conj.imprimir();
+    while(true){
+        cout<<"buscar axioma "<<endl;
+        cin.getline(linea,100);
+        vector<char*> axiomaAAnalizar = separarAxioma(linea);
+        Axioma* dire = new Axioma();
+        cout<<axiomaAAnalizar[0]<<" "<<axiomaAAnalizar[1]<<endl;
+        dire = conj.buscarAxioma(axiomaAAnalizar[0]);
+        if(dire->comprobarAxiomas(dire,axiomaAAnalizar[1])){
+            cout<<endl<<"True"<<endl;
+        }
+        else{
+            cout<<endl<<"False"<<endl;
+        }
+   }
 
-	conj.rellenarDatos();
-
-
-	cout<<endl<<endl<<"--------------------------------------------------------"<<endl<<endl;
-
-
-
-	conj.imprimir();
 	return 0;
 }
+vector<char*> leer(char str[]){
+    //char str[]= linea;
+    vector<char*> datos;
+    char * pch;
+    //printf ("Splitting string \"%s\" into tokens:\n",str);
+    pch = strtok (str,"-");
+    datos.push_back(pch);// Aqui deja solo la coma
+    while (pch != NULL)
+    {// Aqui deberias guardar tu dato en el array!
+        pch = strtok (NULL, " ,.->");
+        datos.push_back(pch); // Aca tambien iria solo la coma.!!
+    }
+    return datos;
+}
 
+vector<char*> leer2(char* str){
+    //char str[]= linea;
+    vector<char*> datos;
+    char * pch;
+    //printf ("Splitting string \"%s\" into tokens:\n",str);
+    pch = strtok (str,", ");
+    datos.push_back(pch);// Aqui deja solo la coma
+    while (pch != NULL)
+    {// Aqui deberias guardar tu dato en el array!
+        pch = strtok (NULL, " ,");
+        datos.push_back(pch); // Aca tambien iria solo la coma.!!
+    }
+
+    return datos;
+}
+
+char* quitarParentesis(char* str){
+    vector<char*> datos;
+    char * pch;
+    //printf ("Splitting string \"%s\" into tokens:\n",str);
+    pch = strtok (str,"()");
+    //cout<<pch<<endl;
+    return pch;
+}
+
+vector<char*> separarAxioma(char* axioma){
+    vector<char*> resultado;
+    char * pch;
+
+    //printf ("Splitting string \"%s\" into tokens:\n",axioma);
+    pch = strtok (axioma,"( ");
+    resultado.push_back(pch);// Aqui deja solo la coma
+    while (pch != NULL)
+    {// Aqui deberias guardar tu dato en el array!
+        pch = strtok (NULL, ") ");
+        resultado.push_back(pch); // Aca tambien iria solo la coma.!!
+    }
+    return resultado;
+
+}
 
 Predicado leerLineaSimple(Predicado set, string linea){
 
