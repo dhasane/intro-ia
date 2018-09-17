@@ -5,45 +5,18 @@
 
 using namespace std;
 
-// compara 2 char*
-bool comparar(char* cc1, char* cc2)
-{
-	int tam = strlen(cc1);
-	int cant = 0 ;
-
-	for(int a = 0 ; a < tam ; a ++)
-	{
-
-		if(cc1[a] == cc2[a])
-		{
-			cant++;
-		}
-	}
-
-	if( cant == tam)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-
-}
-
+// busca si hay un valor dentro de una lista 
 bool presenteEn(vector<string> posibles, string nval)
 {
-	vector<string>::iterator it;// = this->valores.begin();
+	vector<string>::iterator it;
 
 	for(it = posibles.begin(); it != posibles.end(); it++ )
 	{
-		//cout<<*it<<"  <= "<<nval<<endl;
 		if(*it == nval)
 		{
 			return true;
 		}
 	}
-	
 	return false;
 }
 
@@ -51,38 +24,31 @@ class Value{
 
 	public:
 
-	//char * nombre;
 	string nombre;
 	bool esVar; // guarda en caso de ser variable
 	
+	// guarda una lista de posibles valores a tomar, en caso de ser variable
 	vector<string> posibles;
 	
-	Value()
-	{
-	}
-	
-//	inicializador
+	// inicializador
 	Value(string nom)
 	{
 		this->nombre = new char[nom.length()+1];
-		//strcpy(this->nombre , nom.c_str());
 		this->nombre = nom;
 
 		if (nombre[0] > 64 && nombre[0] < 91)
 		{
 			esVar = true;
-			//nomVar = this->nombre;
 		}
 		else
 		{
 			esVar = false;
-			//nomVar = " ";
 		}
 	}
 	
+	// compara el nombre de dos Values
 	bool compararNombre(Value v2)
 	{
-		//if(comparar( this->nombre , v2.nombre ) )
 		if(this->nombre == (v2.nombre))
 		{
 			return true;
@@ -93,63 +59,62 @@ class Value{
 //	copia un valor de otro Value, solo en caso de este ser una variable (mayuscula)
 	void copiar(Value t)
 	{
-		
-		//cout<<"cc "<<t.nombre<<" => "<<this->nombre<<endl;
 		{
 			if(esVar && !t.esVar)
 			{
 				if(!presenteEn(this->posibles, t.nombre))
 				{
-					//cout<<"copiando"<<endl;
 					posibles.push_back(t.nombre);
 				}
 			}
-			else if (esVar && t.esVar )//&& this->nombre == t.nombre)
+			else if (esVar && t.posibles.size() > 0)
 			{
-				
-				//if (this->nombre!=t.nombre)
-				/*{
-					cout<<"c-es ----------------------"<<endl;
-					cout<<"copiando dos variables : "<< this->nombre<<" de "<< t.nombre<<endl;
-					
-				}*/
-				vector<string>::iterator it;// = this->valores.begin();
+				vector<string>::iterator it;
 
 				for(it = t.posibles.begin(); it != t.posibles.end(); it++ )
 				{
-					cout<<*it<<":";
 					if(!presenteEn(this->posibles, *it))
 					{
-						cout<<"copiando"<<endl;
 						posibles.push_back(*it);
 					}
 				}
-				cout<<endl;
-				
 			}
 		}
 	}
-
+	
+	// impime el nombre del valor, y en caso de ser variable y tener distintas opciones, imprime todas las opciones
+	void imprimir()
+	{
+		cout<<this->nombre ;
+		
+		if(this->esVar && this->posibles.size()>0)
+		{
+			cout<<":(";
+			
+			for(int a = 0 ; a < this->posibles.size() ; a ++)
+			{
+				Value subVal = this->posibles[a];
+				cout<< subVal.nombre;
+				
+				if( a+1 == this->posibles.size() - 1)
+				{
+					cout<<", ";
+				}
+			}
+			cout << ") ";
+		}
+	}
 };
 
 class Tupla{
 
-	//private:
 	public:
 
 	string nombre;
 	int ndatos;
 	vector<Value> valores;
-	
-	// Ej: del axioma conquistador(marco,roma)  nombre = conquistador  ,  valores = [marco,roma] con ndatos = 2 (el tamaño de la lista valores)
 
-	// se terminaria creando como :
-	// axioma(conquistador, [marco, roma] )
-
-
-	public:
-
-//	inicializador
+	// inicializador
 	Tupla( string nom, vector<Value> val)
 	{
 		this->nombre  = nom;
@@ -157,114 +122,45 @@ class Tupla{
 		this->ndatos  = val.size();
 
 		this->valores = val;
-
 	}
 
-//	imprime el axioma
+	// imprime los valores de la tupla
 	void imprimir()
 	{
-
 		cout<<this->nombre<<" : ";
-		vector<Value>::iterator it;// = this->valores.begin();
+		vector<Value>::iterator it;
 
 		for(it = this->valores.begin(); it != this->valores.end(); it++ )
 		{
-			if(it->esVar && it->posibles.size()>0)
-			{
-				Value vv = * it;
-				cout<<  vv.nombre<<":(";
-				
-				vector<Value>::iterator itn;
-				for(int a = 0 ; a < vv.posibles.size() ; a ++)
-				{
-					Value subVal = vv.posibles[a];
-					cout<< subVal.nombre;
-					
-					if( a+1 == vv.posibles.size() - 1)
-					{
-						cout<<", ";
-					}
-				}
-				
-				
-				cout << ") ";
-			}
-			else
-			{
-				cout<<  it->nombre ;
-			}
-			
-			
+			it->imprimir();
 			if( it + 1 != this->valores.end())cout<< ", ";
-        	
 		}
 	}
 
-//	compara los dos axiomas y en caso que uno de estos tenga variabes, = > copia los datos de dato a Variable
-	bool rellenarDatos(Tupla ax2 , vector<Value> *variables)
+	// compara los dos axiomas y en caso que uno de estos tenga variabes, = > copia los datos de dato a Variable
+	bool rellenarDatos(Tupla ax2)
 	{
-		//if(compararTuplas(ax2))
 		if(this->nombre == ax2.nombre)
 		{
-		
 			vector<Value>::iterator it;
 			vector<Value>::iterator it2;
 			
 			it = this->valores.begin();
 			it2 = ax2.valores.begin();
-			//bool ret = false;
 			int nVars = 0;
 			int cantidadVariables = 0 ;
 			
-			
-			
 			for( it,it2 ; it2 != ax2.valores.end() ,it != this->valores.end(); it++ ,it2++ )
 			{
-				//cout<<"cccc "<<it2->nombre<<" => "<<it->nombre<<endl;
 				it->copiar(*it2);
 			}
 		}
-		 
 	}
-/*
-	bool compararTuplas(Tupla ax2)
-	{
-		
-		if(this->nombre != ax2.nombre)
-		{
-			return false;
-		}
-		vector<Value>::iterator it;
-		vector<Value>::iterator it2;
-
-		
-		//bool vabien = true;
-		
-		it = this->valores.begin();
-		it2 = ax2.valores.begin();
-
-		
-
-		// verifica que todos los datos que no son variables sean iguales
-		for( it,it2 ; it2 != ax2.valores.end() ,it != this->valores.end(); it++ ,it2++ )
-		{
-
-			if ( !  ( (it->esVar)  || (it2->esVar) ) &&  !it->compararNombre(*it2)  )
-			{
-				return false;
-			}
-			
-		}
-		
-		return true;
-		
-		
-	}
-*/
+	
+	// verifica si la tupla tiene alguna variable
 	bool tieneVariables()
 	{
-		cout<<this->nombre<<" : ";
-		vector<Value>::iterator it;// = this->valores.begin();
+		vector<Value>::iterator it;
 
 		for(it = this->valores.begin(); it != this->valores.end(); it++ )
 		{
@@ -273,26 +169,30 @@ class Tupla{
 				return true;
 			}
 		}
-		
 		return false;
 	}
-	
 };
 
 class Linea{
 	public:
-	int nombre;
+	int numero; // numero en la lista de conjunto 
 	vector<Tupla> tuplas;
-	bool variables;
+	bool variables;// tiene o no variables
+	
+	// caso en el que todas las variables con el mismo nombre puedan tener los mismos valores
 	bool valido; 
 	
+	// inicializador
+	Linea()
+	{
+		this->variables = false;
+		this->valido = false;
+	}
 	
-
-	
-	
+	// verifica si la linea tiene alguna variable
 	void tieneVariables()
 	{
-		vector<Tupla>::iterator it;// = this->valores.begin();
+		vector<Tupla>::iterator it;
 
 		this->variables = false;
 		
@@ -303,19 +203,14 @@ class Linea{
 				this->variables = true;
 			}
 		}
-		
-		
 	}
 	
-//	ingresa una tupla nueva solo en caso de que o sea con un nombre nuevo
-//  o tenga la misma cantidad de argumentos que la tupla con el mismo nombre
-
+	// ingresa una tupla nueva solo en caso de que o sea con un nombre nuevo
+	// o tenga la misma cantidad de argumentos que la tupla con el mismo nombre
 	bool ingresar(string nom, vector<Value> val)
 	{
 		Tupla ax(nom,val);
-
-		vector<Tupla>::iterator it;// = this->valores.begin();
-
+		vector<Tupla>::iterator it;
 		bool ret = true;
 
 		for(it = this->tuplas.begin(); it != this->tuplas.end(); it++ )
@@ -325,14 +220,12 @@ class Linea{
         	{
         		ret = false;
 			}
-
 		}
 
 		if(ret)
 		{
 			tuplas.push_back(ax);
 		}
-
 		return ret;
 	}
 
@@ -341,46 +234,20 @@ class Linea{
 	{
 		vector<Tupla>::iterator it;// = this->valores.begin();
 
-
 		for(it = this->tuplas.begin(); it != this->tuplas.end(); it++ )
 		{
   		  	it->imprimir();
 			cout<<" | ";
 		}
-		
 	}
 	
-	void rellDatos(vector<Tupla>::iterator it, vector<Tupla>::iterator it2 , Linea &cc2 , vector<Value> *variables)
+	// vacia la lista de tuplas, usado para pruebas 
+	void clear()
 	{
-		it->rellenarDatos(*it2 , variables);
-		it2->rellenarDatos(*it , variables);
-		
-		int mit1 = 0;
-		int mit2 = 0;
-		
-		if(it + 1 != this->tuplas.end())
-		{
-			mit1 = 1;
-		}
-		if(it2 + 1 != cc2.tuplas.end() )
-		{
-			mit2 = 1;
-		}
-		
-		if(it +1 == this->tuplas.end() && it2 +1  == cc2.tuplas.end() )
-		{
-		}
-		else
-		{
-			//completar();
-			rellDatos(it+mit1,it2+mit2,cc2, variables);
-		}
-		
-		it->rellenarDatos(*it2 , variables);
-		it2->rellenarDatos(*it , variables);
-		
+		tuplas.clear();
 	}
 	
+	// copia datos de otras lineas, cuando las tuplas tengan el mismo nombre
 	void rellenarDatos( Linea &cc2 )
 	{
 		if(!valido)
@@ -389,81 +256,53 @@ class Linea{
 			vector<Tupla>::iterator it = this->tuplas.begin();
 			vector<Tupla>::iterator it2 = cc2.tuplas.begin();
 			
-			rellDatos(it,it2 ,cc2, &variables);
-			
+			for(it; it != this->tuplas.end() ; it++)
+			{
+				for (it2 = cc2.tuplas.begin(); it2 != cc2.tuplas.end(); it2 ++)
+				{
+					if(it->nombre == it2->nombre)
+					{
+						it->rellenarDatos(*it2);
+						it2->rellenarDatos(*it);
+					}
+				}
+			}
 		}
-		else{
-			
-			cout<<this->nombre<<" ya valido"<<endl;
+		else
+		{
+			//cout<<this->numero<<" ya valido"<<endl;
 		}
-		
-		
-	}
-	
-	void clear()
-	{
-		tuplas.clear();
 	}
 	
 	// le da los mismo valores a todas las variables que tengan el mismo nombre dentro de una linea
+	// llama a recCompletar
 	void completar()
 	{
-		if(variables)
+		if(variables && !this->valido)
 		{
 			vector<string> yaRec;
-			//Valur variable;
-			
-			
-			string var = " ";
-			string val = " ";
-			
-			cout<<"--------------------------"<<this->nombre<<"----------------------------tam : "<<this->tuplas.size()<<endl;
-			imprimir();
-			//cout<<endl;
-			
-			this->valido = recCompletar(false,var,val,yaRec,0,this->tuplas.size());
+			this->valido = recCompletar(false," "," ",yaRec,0,this->tuplas.size());
 		}
 		else 
 		{
 			this->valido = true ;
 		}
-		
-		cout<<"----------------------------------------------------------------------------";
-		if (this->valido == true )
-		{
-			cout<<this->nombre<< " es valido "<<endl;
-		}
-		else{
-			cout<<this->nombre<< " no es valido"<<endl;
-		}
-		//vector<Value> variables;
-		
-		
 	}
 	
+	// parte recursiva de "completar"
 	bool recCompletar(bool enc , string var,string val,vector<string> yaRec, int vaEn,int max)
 	{
-		
-		bool ret = false ; 
-		/*cout<<"-------------------------------------"<<endl;
-		if (enc)
-		{
-			cout<<"encontrado var :"<<var<<":"<<val;
-		}
-		else
-		{
-			cout<<"no encontrado ";
-		}
-		cout<<"  va en :"<<vaEn<<"  "<<max<<endl;
-		*/
+		bool ret = true ;
 		
 		if(vaEn < max)
 		{
+			ret = false;
 			vector<Value>::iterator it = this->tuplas[vaEn].valores.begin();
 			
 			for (int a = 0 ; a < this->tuplas[vaEn].valores.size(); a++)
 			{
 				Value* act = &this->tuplas[vaEn].valores[a];
+				
 				if (act->esVar)
 				{
 					if(act->posibles.size() > 0)
@@ -473,21 +312,16 @@ class Linea{
 						{
 							if(!presenteEn(yaRec, act->nombre+":"+*itpos))
 							{
-								//cout<<"nueva : "<<act->nombre<<" con valor : "<< *itpos<<endl;
 								yaRec.push_back(act->nombre+":"+*itpos);
-								recCompletar(true,act->nombre,*itpos,yaRec,0/*vaEn+1*/,max);
-								
+								recCompletar(true,act->nombre,*itpos,yaRec,0,max);
 							}
 						}
 					}
 					
 					if(enc && act->posibles.size() == 0)
 					{
-						//cout<<"enc"<<endl;
 						if(!presenteEn(act->posibles,val) && act->nombre == var)
 						{
-							
-							cout<<"agregando "<<var<<" con valor : "<< val<<" a "<<act->nombre<<endl;
 							act->copiar(val);
 							ret = true; 
 						}
@@ -497,7 +331,6 @@ class Linea{
 						ret = true;
 						for (int b = 0 ; b < act->posibles.size() ; b++)
 						{
-							//cout<<act->nombre+":"+act->posibles[b]<<endl;
 							if (!presenteEn(yaRec, act->nombre+":"+act->posibles[b]))
 							{
 								ret = false ;
@@ -510,48 +343,33 @@ class Linea{
 					}
 				}
 			}
-			
-			/*
-			if(ret)
-			{
-				cout<<"se cumple "<<endl;
-			}
-			else
-			{
-				cout<<"no se cumple"<<endl;
-			}*/
-		
-			//cout<<"final"<<endl;
-		
-			if(vaEn < max)
-			{
-				return ret && recCompletar(true,var,val,yaRec,vaEn+1,max);
-			}
-			else
-			{
-				return ret;
-			}
 		}
 		
-		
-		
-		
-		
-		
-		
+		if(vaEn < max)
+		{
+			return ret && recCompletar(true,var,val,yaRec,vaEn+1,max);
+		}
+		else
+		{
+			return ret;
+		}
 	}
 };
 
 class Conjunto{
 	
 	vector<Linea> lineas;
+	bool verif;
 	
 	public:
 	
+	//inicializador
 	Conjunto()
 	{
+		this->verif = false;
 	}
 	
+	// imprime todo el conjunto 
 	void imprimir()
 	{
 		for(int a = 0 ; a < lineas.size() ; a++)
@@ -561,23 +379,25 @@ class Conjunto{
 		}
 	}
 	
+	// ingresa lineas 
 	void ingresar(Linea pred)
 	{
-		pred.nombre = this->lineas.size();
+		pred.numero = this->lineas.size();
 		
 		pred.tieneVariables();
 		
 		lineas.push_back(pred);
-		//rellenarDatos();
 	}
 	
+	// rellena los datos buscando en las demas lineas 
 	void rellenarDatos()
 	{
 		for(int a = 0 ; a < lineas.size() ; a++)
 		{
+			/*
 			cout<<"---linea "<<a<<" : ";
 			lineas[a].imprimir();
-			cout<<endl;
+			cout<<endl;//*/
 			
 			if ( !lineas[a].valido )
 			{
@@ -586,109 +406,88 @@ class Conjunto{
 				{
 					if(a!=b)
 					{
+						/*
 						cout<<"linea "<<b<<" : ";
 						lineas[b].imprimir();
-						cout<<endl;
+						cout<<endl;//*/
 						
 						lineas[a].rellenarDatos(lineas[b]);
 					}
 				}
-				
 			}
-			else{
+			/*else{
 					
-				cout<<lineas[a].nombre<<" ya es valido"<<endl;
+				cout<<lineas[a].numero<<" ya es valido"<<endl;
 					
-			}
+			}*/
 			
-			cout<<endl<<endl;
 		}
-		//rellDatos(0,0,lineas.size());
+		//cout<<endl<<endl;
 	}
 	
+	// rellena los datos buscando las variables dentro de la misma linea. Recursiva en linea 
 	void completar()
 	{
+		this->verif = true;
 		for(int a = 0 ; a < lineas.size() ; a++)
 		{
-			
 			lineas[a].completar();
-				
+			// en caso de que la linea no sea valida, el conjunto tampoco lo sera
+			this->verif = this->verif && lineas[a].valido;
 		}
-		//rellDatos(0,0,lineas.size());
+		cout<<"--------------------------"<<endl;
 	}
 	
-	void rellDatos(int vaEn,int comp, int max)
+	// lee una tupla
+	Linea leerLineaSimple(Linea set, string linea)
 	{
-		cout<<"linea "<<vaEn<<" : ";
-		lineas[vaEn].imprimir();
-		lineas[vaEn].rellenarDatos(lineas[comp]);
-		
-		if(vaEn +1 != max && comp +1 != max)
-		{
-			rellDatos(vaEn+1,comp+1,lineas.size());
-		}
-		else if(vaEn +1 != max)
-		{
-			rellDatos(vaEn+1,comp,lineas.size());
-		}
-		else if(comp +1 != max)
-		{
-			rellDatos(vaEn,comp+1,lineas.size());
-		}
-		
-		
-		
-	}
-	
-	
-	
-	Linea leerLineaSimple(Linea set, string linea){
-
 		int a = 0, b = 0, end = linea.size();
-
-		while(linea[b] != '(' && b < end )
-			b++;
-
+		vector<Value> fields;
+		
+		while(linea[b] != '(' && b < end ) b++;
 		string name = linea.substr(a,b);
+		
 		b++;
 
-		vector<Value> fields;
-
-		while(a+b < end){
+		while( a+b < end && linea[ a + b  -1 ] != ')' )
+		{
 			a = a+b;
 			b = 0;
-			while(linea[a+b] != ',' && linea[a+b] != ')' && a+b < end)
-				b++;
-	
+			
+			while(linea[a+b] != ',' && linea[ a+b ] != ')' && a+b < end) b++;
 			fields.push_back(Value(linea.substr(a,b)));
 			b++;
 		}
+		
 		set.ingresar(name,fields);
 		return set;
 	}
-
-	Linea leerLinea(Linea set, string linea){
-
+	
+	// lee una linea
+	Linea leerLinea(Linea set, string linea)
+	{
 		int a = 0, b = 0, end = linea.size();
-
-		while(a+b < end){
-			a = b;
-			while(linea[b] != ')' && b < end)
-				b++;
-
-			//cout<<linea.substr(a,b+1)<<endl;
-			if(linea[b] == ')'){
-				b++;
-				set = leerLineaSimple(set,linea.substr(a,b));
-				b++;
-				while(linea[b] == ' ')
-					b++;
+		bool ing = false;
+		
+		while( b < end )
+		{
+			if( !ing && (linea[b] > 64 && linea[b] < 91 || linea[b] > 96 && linea[b] < 123  )&& b < end ) 
+			{
+				a = b;
+				ing = true ;
 			}
+			
+			if(linea[b] == ')')
+			{
+				set = leerLineaSimple(set,linea.substr(a,b));
+				ing = false; 
+			}
+			b++;
 		}
-
 		return set;
 	}
 	
+	// ingresa una linea
 	void ingresarLinea(string linea)
 	{
 		Linea pred;
@@ -696,142 +495,156 @@ class Conjunto{
 		ingresar(pred);
 	}
 	
+	// llama las funciones rellenarDatos y completar hasta que todas las lineas esten verificadas o que hayan 10 ciclos
+	// debe haber una manera mas eficiente, pero esto funciona por el momento
+	void pro2log()
+	{
+		int cc = 0;
+		
+		cout<<endl<<endl<<"inicial --------------------------------------------------------"<<endl<<endl;
+	
+		imprimir();
+		
+		while(!this->verif && cc < 10)
+		{
+			rellenarDatos();
+			completar();
+			cc++;
+		}
+		
+		cout<<endl<<endl<<"final --------------------------------------------------------"<<endl<<endl;
+		imprimir();
+		
+		if(this->verif)
+		{
+			cout<<"datos completados"<<endl;
+		}
+		else
+		{
+			cout<<"datos no completados"<<endl;
+		}
+	}
 };
 
-
-// axioma(tipo,tipo,tipo)
-
-
-//void insertarAList
-
-Linea leerLinea(Linea set, string linea);
-Linea leerLineaSimple(Linea set, string linea);
-
-int main()
+// para conseguir los datos dados en el ejercicio. Quema de datos de las sabrosas
+Conjunto prueba()
 {
-
-	//cout<< "hola"<<endl;
-	//string val[] = {"marco","roma"};
-	vector<Value> val;
-
-
 	Conjunto conj;
 	
-	//*
 	Linea linea; 
+	vector<Value> val;
 	
+	string hombre = "hombre";
+	string romano = "romano";
+	string marco = "marco";
+	string pompeyano = "pompeyano";
+	string cesar = "cesar";
+	string gobernante = "gobernante";
+	string leal = "leal";
+	string odia = "odia";
+	string intenta_asesinar = "intenta_asesinar";
 	
-	val.clear();
-	val.push_back(Value("marco"));
-	linea.ingresar("hombre" ,val);
-	conj.ingresar(linea);
 	
 	linea.clear();
 	val.clear();
-	val.push_back(Value("marco"));
-	linea.ingresar("pompeyano",val);
+	val.push_back(Value(marco));
+	linea.ingresar(hombre ,val);
+	conj.ingresar(linea);	
+	
+	linea.clear();
+	val.clear();
+	val.push_back(Value(marco));
+	linea.ingresar(pompeyano,val);
 	conj.ingresar(linea);
 	
 	linea.clear();
 	val.clear();
 	val.push_back(Value("X3"));
-	linea.ingresar("pompeyano",val);
+	linea.ingresar(pompeyano,val);
 	val.clear();
 	val.push_back(Value("X3"));
-	linea.ingresar("romano",val);
+	linea.ingresar(romano,val);
 	conj.ingresar(linea);
-	
-	
+		
 	linea.clear();
 	val.clear();
-	val.push_back(Value("cesar"));
-	linea.ingresar("gobernante",val);
+	val.push_back(Value(cesar));
+	linea.ingresar(gobernante,val);
 	conj.ingresar(linea);
-	
-	
+		
 	linea.clear();
-	
 	val.clear();
 	val.push_back(Value("X5"));
-	linea.ingresar("romano",val);
+	linea.ingresar(romano,val);
 	val.clear();
 	val.push_back(Value("X5"));
-	val.push_back(Value("cesar"));
-	linea.ingresar("leal",val);
+	val.push_back(Value(cesar));
+	linea.ingresar(leal,val);
 	val.clear();
 	val.push_back(Value("X5"));
-	val.push_back(Value("cesar"));
-	linea.ingresar("odia",val);	
+	val.push_back(Value(cesar));
+	linea.ingresar(odia,val);	
 	conj.ingresar(linea);
-	
 	
 	linea.clear();
 	val.clear();
 	val.push_back(Value("X7"));
-	linea.ingresar("hombre",val);
+	linea.ingresar(hombre,val);
 	val.clear();
 	val.push_back(Value("Y7"));
-	linea.ingresar("gobernante",val);
+	linea.ingresar(gobernante,val);
 	val.clear();
-	val.push_back(Value("X5"));
+	val.push_back(Value("X7"));
 	val.push_back(Value("Y7"));
-	linea.ingresar("intenta_asesinar",val);
+	linea.ingresar(intenta_asesinar,val);
 	val.clear();
-	val.push_back(Value("X5"));
+	val.push_back(Value("X7"));
 	val.push_back(Value("Y7"));
-	linea.ingresar("leal",val);
+	linea.ingresar(leal,val);
 	conj.ingresar(linea);
-	
 	
 	linea.clear();
 	val.clear();
-	val.push_back(Value("marco"));
-	val.push_back(Value("cesar"));
-	linea.ingresar("intenta_asesinar",val);
+	val.push_back(Value(marco));
+	val.push_back(Value(cesar));
+	linea.ingresar(intenta_asesinar,val);
 	conj.ingresar(linea);
 	
+	return conj;
 	
+}
+
+int main()
+{
+	Conjunto conj;
 	
-	
-	/*/
 	int numpred = 0 ;
 	cout<<"cantidad de lineas a ingresar :";
 	cin>>numpred;
 	
-	
-	string line;
-	cout<<"ingrese algo: \n";
-	for(int a = 0 ; a < numpred ; a ++)
+	if(numpred == 0)
 	{
-		
-		cout<<"> ";
-		cin>>line;
-		
-		conj.ingresarLinea(line);
-		
+		conj = prueba();
+		numpred = 8;
 	}
-	//*/
+	else
+	{
+		string line;
+		cout<<"ingrese algo: \n";
+		for(int a = 0 ; a < numpred ; a ++)
+		{
+			cout<<"> ";
+			cin>>line;
+			
+			conj.ingresarLinea(line);
+		}
+	}
 	
+	if(numpred != 0 )
+	{
+		conj.pro2log();
+	}
 	
-	cout<<endl<<endl<<"antes --------------------------------------------------------"<<endl<<endl;
-	
-	
-	
-	conj.imprimir();
-	
-	cout<<endl<<endl;
-	conj.rellenarDatos();
-	conj.completar();
-	conj.rellenarDatos();
 
-
-
-	cout<<endl<<endl<<"despues --------------------------------------------------------"<<endl<<endl;
-	
-	
-	
-	conj.imprimir();
 	return 0;
 }
-
-
