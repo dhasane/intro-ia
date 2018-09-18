@@ -119,6 +119,8 @@ class Tupla{
 	string nombre;
 	int ndatos;
 	vector<Value> valores;
+	
+	bool rellenado;
 
 	// inicializador
 	Tupla( string nom, vector<Value> val)
@@ -128,6 +130,8 @@ class Tupla{
 		this->ndatos  = val.size();
 
 		this->valores = val;
+		
+		rellenado = false;
 	}
 
 	// imprime los valores de la tupla
@@ -158,7 +162,10 @@ class Tupla{
 			
 			for( it,it2 ; it2 != ax2.valores.end() ,it != this->valores.end(); it++ ,it2++ )
 			{
-				it->copiar(*it2);
+				if(it->copiar(*it2))
+				{
+					rellenado = true;
+				}
 			}
 		}
 	}
@@ -331,7 +338,7 @@ class Linea{
 						}
 					}
 					
-					if(enc && act->posibles.size() == 0)
+					if(enc && !this->tuplas[vaEn].rellenado)// act->posibles.size() == 0)
 					{
 						if(!presenteEn(act->posibles,val) && act->nombre == var)
 						{
