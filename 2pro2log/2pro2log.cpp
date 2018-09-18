@@ -96,7 +96,7 @@ class Value{
 				Value subVal = this->posibles[a];
 				cout<< subVal.nombre;
 				
-				if( a+1 == this->posibles.size() - 1)
+				if( a != this->posibles.size() - 1)
 				{
 					cout<<", ";
 				}
