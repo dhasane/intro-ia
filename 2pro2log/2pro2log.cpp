@@ -57,13 +57,16 @@ class Value{
 	}
 	
 //	copia un valor de otro Value, solo en caso de este ser una variable (mayuscula)
-	void copiar(Value t)
+	bool copiar(Value t)
 	{
+		bool ret = false;
+		
 		{
 			if(esVar && !t.esVar)
 			{
 				if(!presenteEn(this->posibles, t.nombre))
 				{
+					ret = true;
 					posibles.push_back(t.nombre);
 				}
 			}
@@ -75,11 +78,14 @@ class Value{
 				{
 					if(!presenteEn(this->posibles, *it))
 					{
+						ret = true;
 						posibles.push_back(*it);
 					}
 				}
 			}
 		}
+		
+		return ret;
 	}
 	
 	// impime el nombre del valor, y en caso de ser variable y tener distintas opciones, imprime todas las opciones
@@ -248,8 +254,10 @@ class Linea{
 	}
 	
 	// copia datos de otras lineas, cuando las tuplas tengan el mismo nombre
-	void rellenarDatos( Linea &cc2 )
+	bool rellenarDatos( Linea &cc2 )
 	{
+		bool ret = false;
+		
 		if(!valido)
 		{
 			vector<Value> variables;
@@ -262,31 +270,36 @@ class Linea{
 				{
 					if(it->nombre == it2->nombre)
 					{
-						it->rellenarDatos(*it2);
-						it2->rellenarDatos(*it);
+						ret = ret || it->rellenarDatos(*it2);
+						ret = ret || it2->rellenarDatos(*it);
 					}
 				}
 			}
 		}
-		else
-		{
-			//cout<<this->numero<<" ya valido"<<endl;
-		}
+		return ret;
 	}
 	
 	// le da los mismo valores a todas las variables que tengan el mismo nombre dentro de una linea
 	// llama a recCompletar
-	void completar()
+	bool completar()
 	{
+		bool ret = false;
 		if(variables && !this->valido)
 		{
 			vector<string> yaRec;
+			ret = this->valido;
 			this->valido = recCompletar(false," "," ",yaRec,0,this->tuplas.size());
+			
+			if (ret != this->valido)
+			{
+				ret = true;
+			}
 		}
 		else 
 		{
 			this->valido = true ;
 		}
+		return ret;
 	}
 	
 	// parte recursiva de "completar"
@@ -390,12 +403,14 @@ class Conjunto{
 	}
 	
 	// rellena los datos buscando en las demas lineas 
-	void rellenarDatos()
+	bool rellenarDatos()
 	{
+		bool ret = false;
+		
 		for(int a = 0 ; a < lineas.size() ; a++)
 		{
 			/*
-			cout<<"---linea "<<a<<" : ";
+			cout<<endl<<endl<<"---linea "<<a<<" : ";
 			lineas[a].imprimir();
 			cout<<endl;//*/
 			
@@ -411,31 +426,29 @@ class Conjunto{
 						lineas[b].imprimir();
 						cout<<endl;//*/
 						
-						lineas[a].rellenarDatos(lineas[b]);
+						ret = ret || lineas[a].rellenarDatos(lineas[b]);
 					}
 				}
 			}
-			/*else{
-					
-				cout<<lineas[a].numero<<" ya es valido"<<endl;
-					
-			}*/
-			
 		}
-		//cout<<endl<<endl;
+		
+		return ret;
 	}
 	
 	// rellena los datos buscando las variables dentro de la misma linea. Recursiva en linea 
-	void completar()
+	bool completar()
 	{
+		bool ret = false;
+		
 		this->verif = true;
 		for(int a = 0 ; a < lineas.size() ; a++)
 		{
-			lineas[a].completar();
+			ret = ret || lineas[a].completar();
 			// en caso de que la linea no sea valida, el conjunto tampoco lo sera
 			this->verif = this->verif && lineas[a].valido;
 		}
-		cout<<"--------------------------"<<endl;
+		
+		return ret;
 	}
 	
 	// lee una tupla
@@ -499,19 +512,23 @@ class Conjunto{
 	// debe haber una manera mas eficiente, pero esto funciona por el momento
 	void pro2log()
 	{
-		int cc = 0;
-		
 		cout<<endl<<endl<<"inicial --------------------------------------------------------"<<endl<<endl;
 	
 		imprimir();
 		
-		while(!this->verif && cc < 10)
+		bool cambios = true;
+		
+		int cc = 0 ;
+		while(!this->verif && cambios)
 		{
-			rellenarDatos();
-			completar();
+			
+			cambios = false;
+			
+			cambios = cambios || rellenarDatos() || completar();
+			
 			cc++;
 		}
-		
+		cout<<cc<<endl;
 		cout<<endl<<endl<<"final --------------------------------------------------------"<<endl<<endl;
 		imprimir();
 		
