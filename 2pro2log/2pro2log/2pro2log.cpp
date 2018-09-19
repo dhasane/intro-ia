@@ -26,8 +26,6 @@ class Value{
 
 	string nombre;
 	bool esVar; // guarda en caso de ser variable
-
-
 	bool rellenado;
 
 	// guarda una lista de posibles valores a tomar, en caso de ser variable
@@ -61,7 +59,7 @@ class Value{
 		return false;
 	}
 
-//	copia un valor de otro Value, solo en caso de este ser una variable (mayuscula)
+   //	copia un valor de otro Value, solo en caso de este ser una variable (mayuscula)
 	bool copiar(Value t)
 	{
 		bool ret = false;
@@ -116,8 +114,6 @@ class Tupla{
 	string nombre;
 	int ndatos;
 	vector<Value> valores;
-
-	//bool rellenado;
 
 	// inicializador
 	Tupla( string nom, vector<Value> val)
@@ -237,7 +233,7 @@ class Linea{
 		return ret;
 	}
 
-//	imprime las tuplas del predicado
+   //	imprime las tuplas del predicado
 	void imprimir()
 	{
 		vector<Tupla>::iterator it;// = this->valores.begin();
@@ -297,6 +293,10 @@ class Linea{
 				ret = true;
 			}
 		}
+      else
+      {
+         this->valido = true;
+      }
 		return ret;
 	}
 
@@ -305,6 +305,12 @@ class Linea{
 	{
 		bool ret = true ;
 		bool rret = true;
+      /*
+      cout<<endl<<"-------------------------------------"<<yaRec.size()<<endl;
+               for (int a = 0 ; a < yaRec.size() ; a ++)
+               {
+                  cout<<yaRec[a]<<" ";
+               }*/
 
 		if(vaEn < max)
 		{
@@ -330,7 +336,7 @@ class Linea{
 						}
 					}
 
-					if(enc && !act->rellenado)
+               if(enc && !act->rellenado)
 					{
 						if(!presenteEn(act->posibles,val) && act->nombre == var)
 						{
@@ -338,16 +344,43 @@ class Linea{
 							ret = true;
 						}
 					}
-					else if (enc && act->posibles.size() > 0)
+					if (enc)//&& act->posibles.size() > 0)
 					{
-						ret = true;
-						for (int b = 0 ; b < act->posibles.size() ; b++)
-						{
-							if (!presenteEn(yaRec, act->nombre+":"+act->posibles[b]))
-							{
-								ret = false ;
-							}
-						}
+                  bool busc;
+
+                  //cout<<endl<<"-------------------------------------"<<yaRec.size()<<endl;
+
+                  if (yaRec.size() == 1)
+                  {
+                     busc = false;
+                  }
+                  else
+                  {
+                     busc = true;
+                     for (int b = 0 ; b < act->posibles.size() ; b++)
+   						{
+                        busc = true;
+                        if (!presenteEn(yaRec, act->nombre+":"+act->posibles[b]))
+      						{
+      							busc = busc && false ;
+      						}
+                        else
+                        {
+                           busc = busc && true;
+                        }
+   						}
+                  }
+
+                  if(busc)
+                  {
+                     //cout<<"true"<<endl;
+                     ret = true;
+                  }
+                  else
+                  {
+                     //cout<<"false"<<endl;
+                     ret = false;
+                  }
 					}
 					else if (!enc)
 					{
@@ -355,6 +388,7 @@ class Linea{
 					}
 				}
 			}
+
 		}
 		if(vaEn < max)
 		{
@@ -385,8 +419,9 @@ class Conjunto{
 	{
 		for(int a = 0 ; a < lineas.size() ; a++)
 		{
+         //if(lineas[a].valido) cout<< " linea valida\t: ";
+         //else cout<< " linea no valida: ";
 			lineas[a].imprimir();
-         if(lineas[a].valido) cout<< " linea valida ";
 			cout<<endl;
 		}
 	}
@@ -519,8 +554,7 @@ class Conjunto{
 		int cc = 0 ;
 		while(!this->verif && cambios)
 		{
-
-			cambios = false;
+         cambios = false;
 
 			cambios = cambios || rellenarDatos() || completar();
 
@@ -530,14 +564,14 @@ class Conjunto{
 		cout<<endl<<endl<<"final --------------------------------------------------------"<<endl<<endl;
 		imprimir();
 
-		if(this->verif)
+		/*if(this->verif)
 		{
 			cout<<"datos completados"<<endl;
 		}
 		else
 		{
 			cout<<"datos no completados"<<endl;
-		}
+		}*/
 	}
 };
 
