@@ -290,6 +290,7 @@ class Linea{
 
 			if (ret != this->valido)
 			{
+
 				ret = true;
 			}
 		}
@@ -305,12 +306,6 @@ class Linea{
 	{
 		bool ret = true ;
 		bool rret = true;
-      /*
-      cout<<endl<<"-------------------------------------"<<yaRec.size()<<endl;
-               for (int a = 0 ; a < yaRec.size() ; a ++)
-               {
-                  cout<<yaRec[a]<<" ";
-               }*/
 
 		if(vaEn < max)
 		{
@@ -336,7 +331,7 @@ class Linea{
 						}
 					}
 
-               if(enc && !act->rellenado)
+					if(enc && !act->rellenado)
 					{
 						if(!presenteEn(act->posibles,val) && act->nombre == var)
 						{
@@ -344,43 +339,16 @@ class Linea{
 							ret = true;
 						}
 					}
-					if (enc)//&& act->posibles.size() > 0)
+					else if (enc && act->posibles.size() > 0)
 					{
-                  bool busc;
-
-                  //cout<<endl<<"-------------------------------------"<<yaRec.size()<<endl;
-
-                  if (yaRec.size() == 1)
-                  {
-                     busc = false;
-                  }
-                  else
-                  {
-                     busc = true;
-                     for (int b = 0 ; b < act->posibles.size() ; b++)
-   						{
-                        busc = true;
-                        if (!presenteEn(yaRec, act->nombre+":"+act->posibles[b]))
-      						{
-      							busc = busc && false ;
-      						}
-                        else
-                        {
-                           busc = busc && true;
-                        }
-   						}
-                  }
-
-                  if(busc)
-                  {
-                     //cout<<"true"<<endl;
-                     ret = true;
-                  }
-                  else
-                  {
-                     //cout<<"false"<<endl;
-                     ret = false;
-                  }
+						ret = true;
+						for (int b = 0 ; b < act->posibles.size() ; b++)
+						{
+							if (!presenteEn(yaRec, act->nombre+":"+act->posibles[b]))
+							{
+								ret = false ;
+							}
+						}
 					}
 					else if (!enc)
 					{
@@ -388,7 +356,6 @@ class Linea{
 					}
 				}
 			}
-
 		}
 		if(vaEn < max)
 		{
@@ -419,8 +386,8 @@ class Conjunto{
 	{
 		for(int a = 0 ; a < lineas.size() ; a++)
 		{
-         //if(lineas[a].valido) cout<< " linea valida\t: ";
-         //else cout<< " linea no valida: ";
+         /*if(lineas[a].valido) cout<< " linea valida\t: ";
+         else cout<< " linea no valida: ";*/
 			lineas[a].imprimir();
 			cout<<endl;
 		}
@@ -549,22 +516,27 @@ class Conjunto{
 
 		imprimir();
 
+      cout<<endl<<endl<<"cambios --------------------------------------------------------"<<endl<<endl;
+
 		bool cambios = true;
 
 		int cc = 0 ;
 		while(!this->verif && cambios)
 		{
-         cambios = false;
+
+			cambios = false;
 
 			cambios = cambios || rellenarDatos() || completar();
-
+         cout<<endl;
+         imprimir();
 			cc++;
 		}
 		cout<<cc<<endl;
 		cout<<endl<<endl<<"final --------------------------------------------------------"<<endl<<endl;
 		imprimir();
 
-		/*if(this->verif)
+      /*
+		if(this->verif)
 		{
 			cout<<"datos completados"<<endl;
 		}
