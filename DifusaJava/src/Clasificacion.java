@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList;
 
 public class Clasificacion {
 
@@ -10,6 +11,7 @@ public class Clasificacion {
 	Clasificacion(String nom)
 	{
 		this.nombre = nom;
+		pert = new ArrayList<Pertenencia>();
 	}
 
 	// retorna el nombre de la Clasificacion

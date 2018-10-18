@@ -1,10 +1,13 @@
 import java.util.List;
+import java.util.ArrayList;
 
 public class Difusa {
 
 	private List<Clasificacion> clasif;
 
-	Difusa(){}
+	Difusa(){
+		clasif = new ArrayList<Clasificacion>();
+	}
 
 	// fuzzyfica el asunto 
 	// fuzzyfica una Clasificacion especifica con un valor dado

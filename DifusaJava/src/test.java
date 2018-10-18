@@ -19,16 +19,16 @@ public class test {
 		}
 
 
-		System.out.println( "evaluando 8 en azucar : "  +  (dif.fuzzy("azucar", 8)) + "\n");
-		System.out.println("\n" + "------------------------------------\n");
+		System.out.print( "evaluando 8 en azucar : "  +  (dif.fuzzy("azucar", 8)) + "\n");
+		System.out.print("\n" + "------------------------------------\n");
 
-		System.out.println( dif.conseguirValor("azucar","poco dulce") + "\n");
-		System.out.println("\n" + "------------------------------------\n");
-		System.out.println( dif.conseguirValor("azucar","medio dulce") + "\n");
-		System.out.println("\n" + "------------------------------------\n");
+		System.out.print( dif.conseguirValor("azucar","poco dulce") + "\n");
+		System.out.print("\n" + "------------------------------------\n");
+		System.out.print( dif.conseguirValor("azucar","medio dulce") + "\n");
+		System.out.print("\n" + "------------------------------------\n");
 
-		System.out.println("algo entre poco dulce y medio dulce : " +  dif.quieroAlgoEntre("azucar","poco dulce","medio dulce") + "\n");
-		System.out.println("\n" + "------------------------------------\n");
+		System.out.print("algo entre poco dulce y medio dulce : " +  dif.quieroAlgoEntre("azucar","poco dulce","medio dulce") + "\n");
+		System.out.print("\n" + "------------------------------------\n");
 		dif.imprimir();
 
 
