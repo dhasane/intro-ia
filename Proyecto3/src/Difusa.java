@@ -10,6 +10,20 @@ public class Difusa {
 	}
 
 
+	static List<DatoMat> crearMatriz(List<List<DatoMat> > listas)
+	{
+		List<DatoMat> matriz = new ArrayList<DatoMat>();
+
+		matriz = Difusa.crearMatriz(listas.get(0),listas.get(1));
+
+		for (int a = 2 ; a < listas.size() ; a ++)
+		{
+			matriz = Difusa.crearMatriz(matriz,listas.get(a));
+		}
+
+		return matriz;
+	}
+
 	static List<DatoMat> crearMatriz(List<DatoMat> V1, List<DatoMat> V2)
 	{
 		List<DatoMat> matriz = new ArrayList<DatoMat>();
@@ -37,6 +51,26 @@ public class Difusa {
 		return matriz;
 	}
 
+	static DatoMat conseguirMayor(List<DatoMat> datos)
+	{
+		DatoMat dm = null;
+		for (int a = 0 ; a < datos.size() ; a ++)
+		{
+			if(a == 0)
+			{
+				dm = datos.get(a);
+			}
+			else
+			{
+				if(dm.porcentaje < datos.get(a).porcentaje)
+				{
+					dm = datos.get(a);
+				}
+			}
+		}
+
+		return dm;
+	}
 
 	// fuzzyfica el asunto 
 	// fuzzyfica una Clasificacion especifica con un valor dado
