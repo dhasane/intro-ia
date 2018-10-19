@@ -43,7 +43,7 @@ public class Pertenencia {
 	    }
 	    else if (eval >= this.finT && eval <= this.fin)
 	    {
-	        porc = 1 - (eval-this.finT)/(this.fin-this.finT);
+	       porc = 1 - (eval-this.finT)/(this.fin-this.finT);
 	    }
 	    else if(eval > this.fin)
 	    {

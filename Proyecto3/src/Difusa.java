@@ -1,5 +1,5 @@
 import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Difusa {
 
@@ -9,10 +9,41 @@ public class Difusa {
 		clasif = new ArrayList<Clasificacion>();
 	}
 
+
+	static List<DatoMat> crearMatriz(List<DatoMat> V1, List<DatoMat> V2)
+	{
+		List<DatoMat> matriz = new ArrayList<DatoMat>();
+		for (int a = 0 ; a < V1.size() ; a ++)
+		{
+			
+			for(int b = 0 ; b < V2.size() ; b++)
+			{
+				DatoMat dm = new DatoMat();
+				
+				DatoMat dm2 = new DatoMat();
+
+				dm.copyDM(V1.get(a));
+				dm2.copyDM(V2.get(b));
+
+				//System.out.print(dm+"+"+dm2+"\n");
+
+				dm.addV(dm2);
+
+				//System.out.print(dm+"\n");
+				matriz.add(dm);
+			}
+		}
+
+		return matriz;
+	}
+
+
 	// fuzzyfica el asunto 
 	// fuzzyfica una Clasificacion especifica con un valor dado
-	float fuzzy(String nom , float val)
+	List<DatoMat> fuzzy(String nom , float val)
 	{
+      //List<DatoMat> resultados = new List<DatoMat>(20,1);
+
 		for (int a = 0; a < this.clasif.size() ; a++)
 		{
 			if(this.clasif.get(a).getNombre() == nom)
@@ -20,7 +51,7 @@ public class Difusa {
 				return this.clasif.get(a).fuzzy(val);
 			}
 		}
-		return 0;
+      return null; //resultados;
 	}
 
 	// crea una nueva Clasificacion, a la que solo le da nombre, 

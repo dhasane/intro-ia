@@ -1,5 +1,5 @@
 import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Clasificacion {
 
@@ -29,7 +29,7 @@ public class Clasificacion {
 		return true;
 	}
 
-	// imprimir sigue imprimiendo :V
+	// imprimir imprime :V
 	void imprimir()
 	{
 		System.out.println(this.nombre + "\n");
@@ -37,38 +37,46 @@ public class Clasificacion {
 		for (int a = 0; a < this.pert.size() ; a++)
 		{
 			System.out.println("   " +  this.pert.get(a).getNombre());
-			System.out.println(" " + this.pert.get(a).limites());
+			System.out.println("    " + this.pert.get(a).limites());
 			System.out.println("\n");
 		}
 	}
 
 	// fuzzyfica los datos
-	// debe retornar lista de floats/ por ahora retorna el getCentro de masa supuesto e imprime los datos
-	float fuzzy(float val)
+	// retorna lista de floats
+	List<DatoMat> fuzzy(float val)
 	{
-		System.out.println("\n" + this.nombre + "\n");
-		float eval = 0;
-		float cm = 0; // getCentro de masa
+		//System.out.println("\n" + this.nombre + "\n");
+      List<DatoMat> resultados = new ArrayList<DatoMat>();
 
+		float eval = 0;
+		//float cm = 0; // getCentro de masa
+		DatoMat dm;
 		for (int a = 0; a < this.pert.size() ; a++)
 		{
 			eval = this.pert.get(a).evaluar(val);
+			
+			dm = new DatoMat(this.pert.get(a).getNombre(),eval);
+
+         resultados.add(dm);
 
 			// getCentro de masa
-			float cct = (this.pert.get(a).getCentro())*eval;
+			/*float cct = (this.pert.get(a).getCentro())*eval;
 
 			//System.out.println( + " :" + cct + "\n";
 			cm += cct;
+			*/
 
-			System.out.println("   " +  this.pert.get(a).getNombre());
-			System.out.println(" " + eval  + "\n");
+			// esto imprime los datos 
+			//System.out.println("   " +  this.pert.get(a).getNombre());
+			//System.out.println("    " + eval  + "\n");*/
 
 			//System.out.println( + "\n";
 		}
 
-		System.out.println("getCentro de masa supuesto en : " +  cm +  "\n");
+		//System.out.println("Centro de masa supuesto en : " +  cm +  "\n");
 
-		return cm;
+		return resultados;
 	}
 
 	// retorna el getCentro de la Pertenencia
