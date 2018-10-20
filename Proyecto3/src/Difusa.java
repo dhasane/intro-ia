@@ -72,6 +72,35 @@ public class Difusa {
 		return dm;
 	}
 
+	static List<DatoMat> conseguirMayorLista(List<DatoMat> datos)
+	{
+		List<DatoMat> dm = new ArrayList<DatoMat>();
+		float porc = 0;
+		for (int a = 0 ; a < datos.size() ; a ++)
+		{
+			if(a == 0)
+			{
+				porc = datos.get(a).porcentaje;
+				dm.add(datos.get(a));
+			}
+			else
+			{
+				if(porc < datos.get(a).porcentaje)
+				{
+					porc = datos.get(a).porcentaje;
+					dm = new ArrayList<DatoMat>();
+					dm.add(datos.get(a));
+				}
+				else if(porc == datos.get(a).porcentaje)
+				{
+					dm.add(datos.get(a));
+				}
+			}
+		}
+
+		return dm;
+	}
+
 	// fuzzyfica el asunto 
 	// fuzzyfica una Clasificacion especifica con un valor dado
 	List<DatoMat> fuzzy(String nom , float val)

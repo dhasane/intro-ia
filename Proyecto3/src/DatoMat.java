@@ -67,13 +67,13 @@ public class DatoMat {
 
    public String toString() 
    {
-      String ret = "| ";
+      String ret = "\n| ";
       for (int a = 0 ; a < categorias.size() ; a ++ )
       {
          ret += categorias.get(a) + " | ";
       }
       
-      return  ret +": "+ porcentaje + "\n";
+      return  ret +": "+ porcentaje;
       //return getClass().getName() + "@" + Integer.toHexString(hashCode());
    }
 }
