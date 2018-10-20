@@ -26,8 +26,7 @@ public class Difusa {
 
 	static List<DatoMat> crearMatriz(List<DatoMat> V1, List<DatoMat> V2,List<DatoMat> res)
 	{   
-                
-                System.out.println("Difusa.crearMatriz() "+res.get(1).categorias);
+
 		List<DatoMat> matriz = new ArrayList<DatoMat>();
                 int i = (V2.size()/2) , j = (V1.size()/2);
 		for (int a = 0 ; a < V1.size() ; a ++)
@@ -41,12 +40,7 @@ public class Difusa {
 
 				dm.copyDM(V1.get(a));
 				dm2.copyDM(V2.get(b));
-                                /*
-                                if(b==V2.size()/2 && a==V1.size()/2 ){
-                                    
-                                    System.out.println("Normal "+V1.size()/2+" "+V2.size()/2);
-                                    dm.setValor("Normal");
-                                }*/
+                                
                                 int aa= (V2.size()/2)+i;
                                 int bb= (V1.size()/2)-j;
                                 if(bb<0){
@@ -220,18 +214,36 @@ public class Difusa {
 	}
         
         //Buscar el mayor, en el caso de que hayan dos con el mismo nombre en la matriz escoge el valor mayor
-        static List<DatoMat> unificar(List<DatoMat> Mat, List<DatoMat> res){
-            List<DatoMat> resultado = null;
-            DatoMat inicio = null;
+        static List<DatoMat> unificar(List<DatoMat> Mat, List<String> res){
+            List<DatoMat> resultado = new ArrayList<>();
             
-            /*
+            DatoMat inicio = new DatoMat();
+            float porcen =0;
+            
+            
+            System.out.println("Difusa.crearMatriz() "+res.get(0));
+            System.out.println("Difusa.crearMatriz() "+res.get(1));
+            System.out.println("Difusa.crearMatriz() "+res.get(2));
+            
+            
+            
             for(int i=0; i<res.size(); i++){
-                inicio.categorias.set(i, res.get(i).categorias.get(0));
+                inicio = new DatoMat();
+                porcen =0;
+                inicio.valor = res.get(i);
+
                 for(int j=0; j<Mat.size();j++){
-                    
+                    if(Mat.get(j).getValor()==res.get(i)){
+                       if(porcen< Mat.get(j).porcentaje){
+                           
+                           porcen = Mat.get(j).porcentaje;
+                       }
+                    }
                 }
+                inicio.porcentaje = porcen;
+                resultado.add(inicio);
             }
-            */
+            
             return resultado;
         }
 }

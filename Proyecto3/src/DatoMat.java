@@ -1,7 +1,4 @@
 
-
-
-
 import java.util.List;
 import java.util.*;
 
@@ -46,7 +43,7 @@ public class DatoMat {
          this.categorias.add(v2.categorias.get(a));
       }
       
-      System.out.println("DatoMat.addV()" +v2.porcentaje + " - "+ this.porcentaje);
+      
       if(v2.porcentaje < this.porcentaje)
       {
           

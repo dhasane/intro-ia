@@ -23,6 +23,11 @@ public class test {
 		dif.insertarAClasificacion("precio","normal",7,12,15,18);
 		dif.insertarAClasificacion("precio","elite superior alfas",16,20,30,30);
                 
+                List<String> yaNoSe = new ArrayList<>();
+                yaNoSe.add("clase obrera");
+                yaNoSe.add("normal");       
+                yaNoSe.add("elite superior alfas");
+                
 		// prueba para evitar que se repitan nombres de Clasificaciones
 		if(!dif.insertarClasificacion("leche"))
 		{
@@ -45,10 +50,19 @@ public class test {
 		//listas.add(LE2);
 
 		List<DatoMat> Mat = Difusa.crearMatriz(listas,LE2);
+                System.out.println("test.main()1 + "+LE2.get(0).categorias.get(0));
+                System.out.println("test.main()1 + "+LE2.get(1).categorias.get(0));
+                System.out.println("test.main()1 + "+LE2.get(2).categorias.get(0));
 		System.out.print(Mat);
-
+                
                 //De la lista buscar el mayor para cada categoria del resultado (Mayor para "barato",Mayor para "Normal", etc.)
-                //List<DatoMat> resultado = Difusa.unificar(Mat,LE2);
+                System.out.println("");
+                List<DatoMat> resultado = Difusa.unificar(Mat,yaNoSe);
+                
+                for(int i=0; i< resultado.size();i++){
+                    System.out.println(resultado.get(i).valor + " "+resultado.get(i).porcentaje);
+                }
+                
                 
                 
                 
