@@ -9,7 +9,7 @@ public class DatoMat {
 
    List<String> categorias;
    int cantidad;
-
+   String valor;
    float porcentaje;
 
    DatoMat()
@@ -46,9 +46,10 @@ public class DatoMat {
          this.categorias.add(v2.categorias.get(a));
       }
       
-
+      System.out.println("DatoMat.addV()" +v2.porcentaje + " - "+ this.porcentaje);
       if(v2.porcentaje < this.porcentaje)
       {
+          
          this.porcentaje = v2.porcentaje;
       }
    }
@@ -56,7 +57,7 @@ public class DatoMat {
    void copyDM(DatoMat dm2)
    {
       this.cantidad = dm2.cantidad;
-
+      
       for (int a = 0 ; a < dm2.categorias.size() ; a++)
       {
          this.categorias.add(dm2.categorias.get(a));
@@ -70,10 +71,17 @@ public class DatoMat {
       String ret = "\n| ";
       for (int a = 0 ; a < categorias.size() ; a ++ )
       {
-         ret += categorias.get(a) + " | ";
+         ret += categorias.get(a) + " | " ;
       }
       
-      return  ret +": "+ porcentaje;
+      return  ret +": "+ porcentaje+valor;
       //return getClass().getName() + "@" + Integer.toHexString(hashCode());
+   }
+   
+   public void setValor(String nuevo){
+       this.valor = nuevo;
+   }
+   public String getValor(){
+       return valor;
    }
 }

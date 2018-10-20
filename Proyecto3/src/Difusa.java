@@ -10,23 +10,26 @@ public class Difusa {
 	}
 
 
-	static List<DatoMat> crearMatriz(List<List<DatoMat> > listas)
+	static List<DatoMat> crearMatriz(List<List<DatoMat> > listas, List<DatoMat> res)
 	{
 		List<DatoMat> matriz = new ArrayList<DatoMat>();
 
-		matriz = Difusa.crearMatriz(listas.get(0),listas.get(1));
+		matriz = Difusa.crearMatriz(listas.get(0),listas.get(1),res);
 
 		for (int a = 2 ; a < listas.size() ; a ++)
 		{
-			matriz = Difusa.crearMatriz(matriz,listas.get(a));
+			matriz = Difusa.crearMatriz(matriz,listas.get(a),res);
 		}
 
 		return matriz;
 	}
 
-	static List<DatoMat> crearMatriz(List<DatoMat> V1, List<DatoMat> V2)
-	{
+	static List<DatoMat> crearMatriz(List<DatoMat> V1, List<DatoMat> V2,List<DatoMat> res)
+	{   
+                
+                System.out.println("Difusa.crearMatriz() "+res.get(1).categorias);
 		List<DatoMat> matriz = new ArrayList<DatoMat>();
+                int i = (V2.size()/2) , j = (V1.size()/2);
 		for (int a = 0 ; a < V1.size() ; a ++)
 		{
 			
@@ -38,7 +41,32 @@ public class Difusa {
 
 				dm.copyDM(V1.get(a));
 				dm2.copyDM(V2.get(b));
-
+                                /*
+                                if(b==V2.size()/2 && a==V1.size()/2 ){
+                                    
+                                    System.out.println("Normal "+V1.size()/2+" "+V2.size()/2);
+                                    dm.setValor("Normal");
+                                }*/
+                                int aa= (V2.size()/2)+i;
+                                int bb= (V1.size()/2)-j;
+                                if(bb<0){
+                                    bb= bb*-1;
+                                }
+                                System.out.println("Difusa.crearMatriz()"+bb+" "+aa);
+                                if(b==aa && a==bb ){
+                                    //0.2
+                                    System.out.println("Normal "+bb+" "+aa);
+                                    dm.setValor(res.get(res.size()/2).categorias.get(0));
+                                    i--;
+                                    j++;
+                                } 
+                                else if(b> V1.size()/2 && a>V2.size()/2 || b== V1.size()/2 && a>V2.size()/2 || b> V1.size()/2 && a==V2.size()/2){
+                                    dm.setValor(res.get(res.size()-1).categorias.get(0));
+                                }
+                                else if(b< V1.size()/2 && a<V2.size()/2 || b== V1.size()/2 && a<V2.size()/2 || b< V1.size()/2 && a==V2.size()/2 ){
+                                    dm.setValor(res.get(0).categorias.get(0));
+                                }
+                                
 				//System.out.print(dm+"+"+dm2+"\n");
 
 				dm.addV(dm2);
@@ -190,4 +218,20 @@ public class Difusa {
 
 		return 0;
 	}
+        
+        //Buscar el mayor, en el caso de que hayan dos con el mismo nombre en la matriz escoge el valor mayor
+        static List<DatoMat> unificar(List<DatoMat> Mat, List<DatoMat> res){
+            List<DatoMat> resultado = null;
+            DatoMat inicio = null;
+            
+            /*
+            for(int i=0; i<res.size(); i++){
+                inicio.categorias.set(i, res.get(i).categorias.get(0));
+                for(int j=0; j<Mat.size();j++){
+                    
+                }
+            }
+            */
+            return resultado;
+        }
 }

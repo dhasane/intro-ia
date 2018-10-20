@@ -14,22 +14,27 @@ public class test {
 
 
 		dif.insertarClasificacion("leche");
-		dif.insertarAClasificacion("leche","fria",6,8,12,16);
-   	dif.insertarAClasificacion("leche","tibia",14,17,20,22);
-   	dif.insertarAClasificacion("leche","caliente",16,20,26,30);
-
+		dif.insertarAClasificacion("leche","fria",3,5,7,16);
+                dif.insertarAClasificacion("leche","tibia",8,17,20,22);
+                dif.insertarAClasificacion("leche","caliente",16,20,26,30);
+                
+                dif.insertarClasificacion("precio");
+		dif.insertarAClasificacion("precio","clase obrera",0,4,6,10);
+		dif.insertarAClasificacion("precio","normal",7,12,15,18);
+		dif.insertarAClasificacion("precio","elite superior alfas",16,20,30,30);
+                
 		// prueba para evitar que se repitan nombres de Clasificaciones
 		if(!dif.insertarClasificacion("leche"))
 		{
 			System.out.println("valor ya insertado" + "\n");
 		}
 
-		List<DatoMat> AZ = dif.fuzzy("azucar", 8);
-		List<DatoMat> LE = dif.fuzzy("leche", 7);
-		List<DatoMat> LE2 = dif.fuzzy("leche", 20);
+		List<DatoMat> AZ = dif.fuzzy("azucar", 9);
+		List<DatoMat> LE = dif.fuzzy("leche", 9);
+		List<DatoMat> LE2 = dif.fuzzy("precio", 9);
 		
 		System.out.print( "evaluando 8 en azucar : "  +  (AZ) + "\n");
-      System.out.print( "evaluando 7 en leche: "  +  (LE) + "\n");
+      System.out.print( "evaluando 8 en leche: "  +  (LE) + "\n");
 		System.out.print( "evaluando 20 en leche: "  +  (LE2) + "\n");
 		System.out.print("\n" + "------------------------------------\n");
 
@@ -37,15 +42,20 @@ public class test {
 
 		listas.add(AZ);
 		listas.add(LE);
-		listas.add(LE2);
+		//listas.add(LE2);
 
-		List<DatoMat> Mat = Difusa.crearMatriz(listas);
+		List<DatoMat> Mat = Difusa.crearMatriz(listas,LE2);
 		System.out.print(Mat);
 
-
-
+                //De la lista buscar el mayor para cada categoria del resultado (Mayor para "barato",Mayor para "Normal", etc.)
+                //List<DatoMat> resultado = Difusa.unificar(Mat,LE2);
+                
+                
+                
+                /*
+                //Esta parte no sirve 
 		List<DatoMat> dms = Difusa.conseguirMayorLista(Mat);
-		System.out.print("\n" + "------------------------------------\n"+dms);
+		System.out.print("\n" + "------------------------------------\n"+dms); */
 		
 		//System.out.print( dif.conseguirValor("azucar","poco dulce") + "\n");
 		//System.out.print("\n" + "------------------------------------\n");
