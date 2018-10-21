@@ -46,7 +46,6 @@ public class DatoMat {
       
       if(v2.porcentaje < this.porcentaje)
       {
-          
          this.porcentaje = v2.porcentaje;
       }
    }
@@ -71,7 +70,7 @@ public class DatoMat {
          ret += categorias.get(a) + " | " ;
       }
       
-      return  ret +": "+ porcentaje+valor;
+      return  ret +": "+ porcentaje +"  categ: "+valor;
       //return getClass().getName() + "@" + Integer.toHexString(hashCode());
    }
    
