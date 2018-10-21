@@ -177,13 +177,14 @@ public class Utils {
                 for(int c = 0 ; c < tam ; c++)
                 {
                     System.out.println("------"+corte*c +"  " + 10*b +"  "+corte*(c+1));
-                    if (corte*c <= 10*b && 10*b <= corte*(c+1) ) 
+                    if (corte*c <= 10*b && 10*b < corte*(c+1) && corte*c <= 10*a && 10*a < corte*(c+1) ) 
                     {
                         System.out.println("im in\n");
                         if(dm.porcentaje > res.get(c).porcentaje)
                         {
-                            System.out.println("   "+res.get(c)+"\n");
+                            
                             res.get(c).modificarProbabilidad(dm.porcentaje);
+                            System.out.println("------------------"+dm+"        "+dm.porcentaje+"   "+res.get(c)+"\n");
                         }
                     }
                 }
