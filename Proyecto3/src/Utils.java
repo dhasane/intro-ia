@@ -93,7 +93,7 @@ public class Utils {
     
     static List<DatoMat> porcentajesResultado(List<List<DatoMat>> listas,  List<String> res) {
         List<DatoMat> matriz = new ArrayList<DatoMat>();
-        
+        boolean ultimo= false;
         List<DatoMat> datos = new ArrayList<DatoMat>();
         MatYDato myd;
         for (int a = 0 ; a < res.size() ; a ++)
@@ -104,14 +104,17 @@ public class Utils {
         }
         
         // aun se tiene que retornar la matriz completa, ya que se le iran sumando dimensiones
-        myd = revisarDimension(listas.get(0), listas.get(1), datos);
+        myd = revisarDimension(listas.get(0), listas.get(1), datos,ultimo);
         matriz = myd.matriz;
         datos = myd.respuesta;
         
 //        System.out.println(matriz + "\n---------------------------\n"+datos+ "\n---------------------------\n"+ "\n---------------------------\n");
 //        System.out.println("\n---------------------------\n"+ "\n---------------------------\n");
+        
         for (int a = 2; a < listas.size(); a++) {
-            myd = revisarDimension(matriz, listas.get(a), datos);
+            if (a == listas.size()-1) ultimo = true;
+            
+            myd = revisarDimension(matriz, listas.get(a), datos,ultimo);
             matriz = myd.matriz;
             datos = myd.respuesta;
             
@@ -127,7 +130,7 @@ public class Utils {
         return datos;
     }
 
-    static MatYDato revisarDimension(List<DatoMat> V1, List<DatoMat> V2,  List<DatoMat> res) {
+    static MatYDato revisarDimension(List<DatoMat> V1, List<DatoMat> V2,  List<DatoMat> res,boolean revisarVal) {
 
         List<DatoMat> matriz = new ArrayList<DatoMat>();
         
@@ -135,7 +138,6 @@ public class Utils {
         
         float corte1 = 10*V1.size() / tam ;
         float corte2 = 10*V2.size() / tam ;
-        
         System.out.println(V1.size() +"    "+tam +"   el corte es : "+corte1/10+"-------------------------\n");
         System.out.println(V2.size() +"    "+tam +"   el corte es : "+corte2/10+"-------------------------\n");
         for (int a = 0; a < V1.size(); a++) {
@@ -154,24 +156,41 @@ public class Utils {
                 dm.addV(dm2);
                 System.out.println("---begin---");
 //                System.out.println(dm);
-                for (int c = 0; c < tam; c++) {
+                
+                if (revisarVal) {
+                    boolean enc = false;
+                    int pos = 0 ;
+                    float posib = 0 ;
                     
-                    System.out.println("------" + corte1 * c / 10 + "  " + a + "  " + corte1 * (c + 1) / 10);
-                    System.out.println("------" + corte2 * c / 10 + "  " + b + "  " + corte2 * (c + 1) / 10);
-                   
-                    if (corte2 * c / 10 <= b || corte1 * c / 10 <= a ) 
-                    {
-                        System.out.println("  hola  " + res.get(c).categorias.get(0));
-                        dm.setValor(res.get(c).categorias.get(0));
-//                        System.out.println("  hola 22  " + dm.getValor());
+                    for (int c = 0; c < tam; c++) {
                         
-                        if (dm.porcentaje > res.get(c).porcentaje) 
-                        {
-                            res.get(c).modificarProbabilidad(dm.porcentaje);
-                            System.out.println("------------------"+dm+"        "+dm.porcentaje+"   "+dm.getValor()+"\n");
+                        float inf1 = corte1 * c / 10;
+                        float inf2 = corte2 * c / 10;
+                        
+                        float sup1 = corte1 * (c + 1) / 10;
+                        float sup2 = corte1 * (c + 1) / 10;
+                        
+                        System.out.println("------" + inf1 + "  " + a + "  " + sup1);
+                        System.out.println("------" + inf2 + "  " + b + "  " + sup2);
+
+                        if ( inf1 <= b || corte1 * c / 10 <= a) {
+                            System.out.println("  hola  " + res.get(c).categorias.get(0));
+                            dm.setValor(res.get(c).categorias.get(0));
+//                        System.out.println("  hola 22  " + dm.getValor());
+                            enc = true;
+                            posib = dm.porcentaje;
+                            pos = c;
+                        }
+                    }
+                    
+                    if (enc) {
+                        if (dm.porcentaje > res.get(pos).porcentaje) {
+                            res.get(pos).modificarProbabilidad(dm.porcentaje);
+                            System.out.println("------------------" + dm + "        " + dm.porcentaje + "   " + dm.getValor() + "\n");
                         }
                     }
                 }
+                
                 System.out.println("end =------------------------");
                 //System.out.print(dm+"\n");
                 matriz.add(dm);
