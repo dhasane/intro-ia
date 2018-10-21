@@ -3,10 +3,11 @@ import java.util.*;
 
 
 public class test {
-
+        static Difusa dif;
 	public static void main(String[] args) {
-		Difusa dif = new Difusa();
-
+		dif = new Difusa();
+                
+                ingresarADifusa("azucar");
 		dif.insertarClasificacion("azucar");
 		dif.insertarAClasificacion("azucar","poco dulce",2,4,7,10);
 		dif.insertarAClasificacion("azucar","medio dulce",6,10,15,18);
@@ -27,12 +28,7 @@ public class test {
 		dif.insertarAClasificacion("precio","clase obrera",0,4,6,10);
 		dif.insertarAClasificacion("precio","normal",7,12,15,18);
 		dif.insertarAClasificacion("precio","elite superior alfas",16,20,30,30);
-                                
-		// prueba para evitar que se repitan nombres de Clasificaciones
-		if(!dif.insertarClasificacion("leche"))
-		{
-			System.out.println("valor ya insertado" + "\n");
-		}
+                       
                 
                 System.out.print("\n" + "------------------------------------\n");
 		dif.imprimir();
@@ -56,7 +52,7 @@ public class test {
 
 		listas.add(AZ);
 		listas.add(LE);
-                //listas.add(CA);
+                listas.add(CA);
 //                listas.add(LE2);
                 
 //		List<DatoMat> Mat = Utils.crearMatriz(listas,catResultado);
@@ -66,11 +62,6 @@ public class test {
                 System.out.println("test.main()1 + "+LE2.get(1).categorias.get(0));
                 System.out.println("test.main()1 + "+LE2.get(2).categorias.get(0));
                 */
-                System.out.print("\n" + "------------------------------------\n");
-                System.out.print("\n" + "------------------------------------hmmm \n");
-                
-//		System.out.print(Mat);
-                
                 System.out.print("\n" + "------------------------------------\n");
                 System.out.print("\n" + "------------------------------------\n");
                 
@@ -84,15 +75,17 @@ public class test {
                 System.out.println("\nresultado : \n");
                 System.out.println(resultado);
                 
-                
-                
                 System.out.println("\n\n\nresultado final : "+dif.encontrarResultado("precio",resultado));
                 
-                
-                
-
-
 	}
+        
+    static void ingresarADifusa(String nom) 
+    {
+        if (!dif.insertarClasificacion(nom)) {
+            System.out.println("valor ya insertado \n");
+        } else {
+            System.out.println("valor insertado \n");
+        }
+    }
 
 }
-

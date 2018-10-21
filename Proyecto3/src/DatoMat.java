@@ -6,7 +6,7 @@ public class DatoMat {
 
    List<String> categorias;
    int cantidad;
-//   String valor;
+   String valor;
    float porcentaje;
 
    DatoMat()
@@ -70,16 +70,16 @@ public class DatoMat {
          ret += categorias.get(a) + " | " ;
       }
       
-      return  ret +": "+ porcentaje;// +"  categ: "+valor;
+      return  ret +": "+ porcentaje +"  categ: "+valor;
       //return getClass().getName() + "@" + Integer.toHexString(hashCode());
    }
-   /*
+   //*
    public void setValor(String nuevo){
        this.valor = nuevo;
    }
    public String getValor(){
        return valor;
-   }*/
+   }//*/
 
     void modificarProbabilidad(float porcentaje) {
         this.porcentaje = porcentaje;

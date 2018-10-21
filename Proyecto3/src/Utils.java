@@ -89,28 +89,7 @@ public class Utils {
         }
         return resultado;
     }
-    */
-    /*
-    {
-        int aa = (V2.size() / 2) + i;
-        int bb = (V1.size() / 2) - j;
-        if (bb < 0) {
-            bb = bb * -1;
-        }
-//                                System.out.println("Difusa.crearMatriz()"+bb+" "+aa);
-        if (b == aa && a == bb) {
-            //0.2
-//                                    System.out.println("Normal "+bb+" "+aa);
-            dm.setValor(res.get(res.size() / 2));
-            i--;
-            j++;
-        } else if (b > V1.size() / 2 && a > V2.size() / 2 || b == V1.size() / 2 && a > V2.size() / 2 || b > V1.size() / 2 && a == V2.size() / 2) {
-            dm.setValor(res.get(res.size() - 1));
-        } else if (b < V1.size() / 2 && a < V2.size() / 2 || b == V1.size() / 2 && a < V2.size() / 2 || b < V1.size() / 2 && a == V2.size() / 2) {
-            dm.setValor(res.get(0));
-        }
-    }*/
-    
+    */    
     
     static List<DatoMat> porcentajesResultado(List<List<DatoMat>> listas,  List<String> res) {
         List<DatoMat> matriz = new ArrayList<DatoMat>();
@@ -119,7 +98,7 @@ public class Utils {
         MatYDato myd;
         for (int a = 0 ; a < res.size() ; a ++)
         {
-            System.out.println("Difusa.crearMatriz() " + res.get(a));
+//            System.out.println("Difusa.crearMatriz() " + res.get(a));
             DatoMat dm = new DatoMat(res.get(a),0);
             datos.add(dm);
         }
@@ -130,13 +109,13 @@ public class Utils {
         datos = myd.respuesta;
         
 //        System.out.println(matriz + "\n---------------------------\n"+datos+ "\n---------------------------\n"+ "\n---------------------------\n");
-        System.out.println("\n---------------------------\n"+ "\n---------------------------\n");
+//        System.out.println("\n---------------------------\n"+ "\n---------------------------\n");
         for (int a = 2; a < listas.size(); a++) {
             myd = revisarDimension(matriz, listas.get(a), datos);
             matriz = myd.matriz;
             datos = myd.respuesta;
             
-            System.out.println("\n---------------------------\n"+ "\n---------------------------\n");
+//            System.out.println("\n---------------------------\n"+ "\n---------------------------\n");
 //            System.out.println(matriz + "\n---------------------------\n"+datos+ "\n---------------------------\n"+ "\n---------------------------\n");
         }
         
@@ -153,11 +132,12 @@ public class Utils {
         List<DatoMat> matriz = new ArrayList<DatoMat>();
         
         int tam = res.size();
-        float corte;
         
-        corte = 10*V2.size() / tam ;
+        float corte1 = 10*V1.size() / tam ;
+        float corte2 = 10*V2.size() / tam ;
         
-        System.out.println(10*V2.size() +"    "+tam +"   el corte es : "+corte+"\n");
+        System.out.println(V1.size() +"    "+tam +"   el corte es : "+corte1/10+"-------------------------\n");
+        System.out.println(V2.size() +"    "+tam +"   el corte es : "+corte2/10+"-------------------------\n");
         for (int a = 0; a < V1.size(); a++) {
             
             for (int b = 0; b < V2.size(); b++) {
@@ -174,21 +154,25 @@ public class Utils {
                 dm.addV(dm2);
                 System.out.println("---begin---");
 //                System.out.println(dm);
-                for(int c = 0 ; c < tam ; c++)
-                {
-                    System.out.println("------"+corte*c +"  " + 10*b +"  "+corte*(c+1));
-                    if (corte*c <= 10*b && 10*b < corte*(c+1) && corte*c <= 10*a && 10*a < corte*(c+1) ) 
+                for (int c = 0; c < tam; c++) {
+                    
+                    System.out.println("------" + corte1 * c / 10 + "  " + a + "  " + corte1 * (c + 1) / 10);
+                    System.out.println("------" + corte2 * c / 10 + "  " + b + "  " + corte2 * (c + 1) / 10);
+                   
+                    if (corte2 * c / 10 <= b || corte1 * c / 10 <= a ) 
                     {
-                        System.out.println("im in\n");
-                        if(dm.porcentaje > res.get(c).porcentaje)
+                        System.out.println("  hola  " + res.get(c).categorias.get(0));
+                        dm.setValor(res.get(c).categorias.get(0));
+//                        System.out.println("  hola 22  " + dm.getValor());
+                        
+                        if (dm.porcentaje > res.get(c).porcentaje) 
                         {
-                            
                             res.get(c).modificarProbabilidad(dm.porcentaje);
-                            System.out.println("------------------"+dm+"        "+dm.porcentaje+"   "+res.get(c)+"\n");
+                            System.out.println("------------------"+dm+"        "+dm.porcentaje+"   "+dm.getValor()+"\n");
                         }
                     }
                 }
-                
+                System.out.println("end =------------------------");
                 //System.out.print(dm+"\n");
                 matriz.add(dm);
             }
