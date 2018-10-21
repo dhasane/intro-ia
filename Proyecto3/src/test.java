@@ -56,10 +56,11 @@ public class test {
 
 		listas.add(AZ);
 		listas.add(LE);
+                //listas.add(CA);
 //                listas.add(LE2);
                 
 //		List<DatoMat> Mat = Utils.crearMatriz(listas,catResultado);
-                List<DatoMat> Mat = Utils.crearMatriz(listas);
+//                List<DatoMat> Mat = Utils.crearMatriz(listas);
                 
                 /*System.out.println("test.main()1 + "+LE2.get(0).categorias.get(0));
                 System.out.println("test.main()1 + "+LE2.get(1).categorias.get(0));
@@ -68,18 +69,18 @@ public class test {
                 System.out.print("\n" + "------------------------------------\n");
                 System.out.print("\n" + "------------------------------------hmmm \n");
                 
-		System.out.print(Mat);
+//		System.out.print(Mat);
                 
                 System.out.print("\n" + "------------------------------------\n");
                 System.out.print("\n" + "------------------------------------\n");
                 
                 
-                List<DatoMat> dms = Utils.conseguirMayorLista(Mat);
-		System.out.print("\n" + "------------------------------------\n lista de mayores : \n"+dms); 
+//                List<DatoMat> dms = Utils.conseguirMayorLista(Mat);
+//		System.out.print("\n" + "------------------------------------\n lista de mayores : \n"+dms); 
                         
                 //De la lista buscar el mayor para cada categoria del resultado (Mayor para "barato",Mayor para "Normal", etc.)
                 System.out.println("");
-                List<DatoMat> resultado = Utils.unificar(Mat,catResultado);
+                List<DatoMat> resultado = Utils.porcentajesResultado(listas,catResultado);
                 System.out.println("\nresultado : \n");
                 System.out.println(resultado);
                 

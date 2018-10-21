@@ -93,7 +93,7 @@ public class Clasificacion {
         float cm = 0;
         for(int a = 0 ; a < resultado.size() ; a++)
         {
-            cm += getCentro(resultado.get(a).getValor())*resultado.get(a).porcentaje;
+            cm += getCentro(resultado.get(a).categorias.get(0) )*resultado.get(a).porcentaje;
         }
         return Utils.conseguirMayor(fuzzy(cm)).categorias.get(0);
     }
