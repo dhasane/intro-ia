@@ -19,6 +19,7 @@ public class Utils {
         int seleccion = 0;
         for(int a = 0 ; a < matriz.size() ; a++)
         {
+            System.out.print(matriz.get(a)+" : ");
             seleccion = leerTeclado(); // juju quedan encargados de esto tehee
             matriz.get(a).setValor(catRes.get(seleccion));
         }
@@ -60,11 +61,11 @@ public class Utils {
 
         DatoMat inicio = new DatoMat();
         float porcen = 0;
-
+        /*
         System.out.println("Difusa.crearMatriz() " + res.get(0));
         System.out.println("Difusa.crearMatriz() " + res.get(1));
         System.out.println("Difusa.crearMatriz() " + res.get(2));
-
+        */
         for (int i = 0; i < res.size(); i++) 
         {
             porcen = 0;

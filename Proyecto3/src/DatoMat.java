@@ -70,7 +70,7 @@ public class DatoMat {
          ret += categorias.get(a) + " | " ;
       }
       
-      return  ret +": "+ porcentaje +"  categ: "+valor;
+      return  ret +": "+ porcentaje;// +"  categ: "+valor;
       //return getClass().getName() + "@" + Integer.toHexString(hashCode());
    }
    //*

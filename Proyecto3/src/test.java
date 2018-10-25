@@ -61,11 +61,8 @@ public class test {
                 System.out.print("\n" + "------------------------------------\n");
                 System.out.print("\n" + "------------------------------------\n");
                 
-                System.out.print(Mat);
+                //System.out.print(Mat);
 
-                System.out.print("\n" + "------------------------------------\n");
-                System.out.print("\n" + "------------------------------------\n");
-                
                 List<DatoMat> resultado = Utils.unificar(Mat,catResultado);
                 System.out.println("\nresultado : \n");
                 System.out.println("categoria | porcentaje | \"categoria\" (realmente esta porque se esta usando datomat/ sobra) ");
