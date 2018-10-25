@@ -116,13 +116,25 @@ Especie Poblacion::heredar(Especie H1, Especie H2)
 
    for (int a = 0 ; a < esp->getNgene() ; a++)
    {
-      if(rnd(0,10) > 5)
+      int ran = rnd(0,10);
+      if( ran < 4)
       {
          esp->setGen(a, H1.getGen(a) );
       }
-      else
+      else if ( ran < 8)
       {
          esp->setGen(a, H2.getGen(a) );
+      }
+      else
+      {
+         if(rnd(0,10)<5)
+         {
+             esp->setGen(a, true );
+         }
+         else
+         {
+             esp->setGen(a, false );
+         }
       }
    }
 
