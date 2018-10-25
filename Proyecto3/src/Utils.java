@@ -7,18 +7,35 @@ import java.util.List;
 public class Utils {
     
     
-    /*static List<DatoMat> crearMatriz(List<List<DatoMat>> listas, List<String> res) {
+    static void darValores(List<DatoMat> matriz, List<String> catRes)
+    {
+        System.out.println("categorias resultado dispunibles : ");
+        for (int a = 0 ; a < catRes.size() ; a++)
+        {
+            System.out.println(a+" "+catRes.get(a));
+        }
+        System.out.println("por favor digite el numero respectivo para la categoria deseada : ");
+
+        int seleccion = 0;
+        for(int a = 0 ; a < matriz.size() ; a++)
+        {
+            seleccion = leerTeclado(); // juju quedan encargados de esto tehee
+            matriz.get(a).setValor(catRes.get(seleccion));
+        }
+    }
+
+    static List<DatoMat> crearMatriz(List<List<DatoMat>> listas) {
         List<DatoMat> matriz = new ArrayList<DatoMat>();
 
-        matriz = crearMatriz(listas.get(0), listas.get(1), res);
+        matriz = crearMatriz(listas.get(0), listas.get(1));
 
         for (int a = 2; a < listas.size(); a++) {
-            matriz = crearMatriz(matriz, listas.get(a), res);
+            matriz = crearMatriz(matriz, listas.get(a));
         }
         return matriz;
     }
 
-    static List<DatoMat> crearMatriz(List<DatoMat> V1, List<DatoMat> V2, List<String> res) {
+    static List<DatoMat> crearMatriz(List<DatoMat> V1, List<DatoMat> V2) {
 
         List<DatoMat> matriz = new ArrayList<DatoMat>();
         int i = (V2.size() / 2), j = (V1.size() / 2);
@@ -26,39 +43,17 @@ public class Utils {
 
             for (int b = 0; b < V2.size(); b++) {
                 DatoMat dm = new DatoMat();
-
                 DatoMat dm2 = new DatoMat();
 
                 dm.copyDM(V1.get(a));
                 dm2.copyDM(V2.get(b));
-
-                int aa = (V2.size() / 2) + i;
-                int bb = (V1.size() / 2) - j;
-                if (bb < 0) {
-                    bb = bb * -1;
-                }
-//                                System.out.println("Difusa.crearMatriz()"+bb+" "+aa);
-                if (b == aa && a == bb) {
-                    //0.2
-//                                    System.out.println("Normal "+bb+" "+aa);
-                    dm.setValor(res.get(res.size() / 2));
-                    i--;
-                    j++;
-                } else if (b > V1.size() / 2 && a > V2.size() / 2 || b == V1.size() / 2 && a > V2.size() / 2 || b > V1.size() / 2 && a == V2.size() / 2) {
-                    dm.setValor(res.get(res.size() - 1));
-                } else if (b < V1.size() / 2 && a < V2.size() / 2 || b == V1.size() / 2 && a < V2.size() / 2 || b < V1.size() / 2 && a == V2.size() / 2) {
-                    dm.setValor(res.get(0));
-                }
-
-                //System.out.print(dm+"+"+dm2+"\n");
                 dm.addV(dm2);
-
-                //System.out.print(dm+"\n");
                 matriz.add(dm);
             }
         }
         return matriz;
     }
+
     //Buscar el mayor, en el caso de que hayan dos con el mismo nombre en la matriz escoge el valor mayor
     static List<DatoMat> unificar(List<DatoMat> Mat, List<String> res) {
         List<DatoMat> resultado = new ArrayList<>();
@@ -89,8 +84,9 @@ public class Utils {
         }
         return resultado;
     }
-    */    
-    
+
+    //*/    // toda esta cosa era para hacer aparentemente mas de lo necesario
+    /*
     static List<DatoMat> porcentajesResultado(List<List<DatoMat>> listas,  List<String> res) {
         List<DatoMat> matriz = new ArrayList<DatoMat>();
         boolean ultimo= false;
@@ -201,7 +197,7 @@ public class Utils {
         
         return myd;
     }
-    
+    //*/
     
     
     /*

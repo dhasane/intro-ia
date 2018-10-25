@@ -88,6 +88,7 @@ public class Difusa {
         return null;
     }
 
+    // consigue el centro de masa de la clasificasion "nom"
     String encontrarResultado(String nom, List<DatoMat> resultado) {
         for (int a = 0; a < this.clasif.size(); a++) 
         {

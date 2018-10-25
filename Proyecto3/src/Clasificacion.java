@@ -40,11 +40,8 @@ public class Clasificacion {
     // fuzzyfica los datos
     // retorna lista de floats
     List<DatoMat> fuzzy(float val) {
-        //System.out.println("\n" + this.nombre + "\n");
         List<DatoMat> resultados = new ArrayList<DatoMat>();
-
         float eval = 0;
-        //float cm = 0; // getCentro de masa
         DatoMat dm;
         for (int a = 0; a < this.pert.size(); a++) {
             eval = this.pert.get(a).evaluar(val);
@@ -52,20 +49,7 @@ public class Clasificacion {
             dm = new DatoMat(this.pert.get(a).getNombre(), eval);
 
             resultados.add(dm);
-
-            // getCentro de masa
-            /*float cct = (this.pert.get(a).getCentro())*eval;
-
-			//System.out.println( + " :" + cct + "\n";
-			cm += cct;
-             */
-            // esto imprime los datos 
-            //System.out.println("   " +  this.pert.get(a).getNombre());
-            //System.out.println("    " + eval  + "\n");*/
-            //System.out.println( + "\n";
         }
-
-        //System.out.println("Centro de masa supuesto en : " +  cm +  "\n");
         return resultados;
     }
 
@@ -89,12 +73,20 @@ public class Clasificacion {
         return cat;
     }
 
+    // consigue el centro de masa
     String getResultado(List<DatoMat> resultado) {
         float cm = 0;
+        System.out.println(resultado+"\n");
         for(int a = 0 ; a < resultado.size() ; a++)
         {
-            cm += getCentro(resultado.get(a).categorias.get(0) )*resultado.get(a).porcentaje;
+            float centro = getCentro(resultado.get(a).categorias.get(0) );
+            float porcent = resultado.get(a).porcentaje;
+            System.out.println("centro figura : "+centro+" * "+porcent);
+            // multiplica el centro de la figura por su porcentaje
+            cm += centro*porcent;
         }
+
+        System.out.println("centro de masa final : "+cm);
         return Utils.conseguirMayor(fuzzy(cm)).categorias.get(0);
     }
 

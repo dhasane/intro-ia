@@ -25,7 +25,7 @@ public class test {
                 dif.insertarAClasificacion("cafe","oscuro",12,18,24,30);
                 
                 dif.insertarClasificacion("precio");
-		dif.insertarAClasificacion("precio","clase obrera",0,4,6,10);
+		dif.insertarAClasificacion("precio","clase obrera",1,4,6,10);
 		dif.insertarAClasificacion("precio","normal",7,12,15,18);
 		dif.insertarAClasificacion("precio","elite superior alfas",16,20,30,30);
                        
@@ -42,8 +42,8 @@ public class test {
                 
 		List< String > catResultado = dif.getCategorias("precio");
 		
-		System.out.print( "evaluando 8 en azucar : "  +  (AZ) + "\n");
-                System.out.print( "evaluando 8 en leche: "  +  (LE) + "\n");
+		System.out.print( "evaluando 9 en azucar : "  +  (AZ) + "\n");
+                System.out.print( "evaluando 15 en leche: "  +  (LE) + "\n");
                 System.out.print( "evaluando 20 en cafe: "  +  (CA) + "\n");
 		System.out.print( "\n\ncategorias resultado "  +  (catResultado) + "\n");
 		System.out.print("\n" + "------------------------------------\n");
@@ -53,29 +53,28 @@ public class test {
 		listas.add(AZ);
 		listas.add(LE);
                 listas.add(CA);
-//                listas.add(LE2);
                 
-//		List<DatoMat> Mat = Utils.crearMatriz(listas,catResultado);
-//                List<DatoMat> Mat = Utils.crearMatriz(listas);
+		List<DatoMat> Mat = Utils.crearMatriz(listas);
                 
-                /*System.out.println("test.main()1 + "+LE2.get(0).categorias.get(0));
-                System.out.println("test.main()1 + "+LE2.get(1).categorias.get(0));
-                System.out.println("test.main()1 + "+LE2.get(2).categorias.get(0));
-                */
+                Utils.darValores(Mat,catResultado);
+                
                 System.out.print("\n" + "------------------------------------\n");
                 System.out.print("\n" + "------------------------------------\n");
                 
+                System.out.print(Mat);
+
+                System.out.print("\n" + "------------------------------------\n");
+                System.out.print("\n" + "------------------------------------\n");
                 
-//                List<DatoMat> dms = Utils.conseguirMayorLista(Mat);
-//		System.out.print("\n" + "------------------------------------\n lista de mayores : \n"+dms); 
-                        
-                //De la lista buscar el mayor para cada categoria del resultado (Mayor para "barato",Mayor para "Normal", etc.)
-                System.out.println("");
-                List<DatoMat> resultado = Utils.porcentajesResultado(listas,catResultado);
+                List<DatoMat> resultado = Utils.unificar(Mat,catResultado);
                 System.out.println("\nresultado : \n");
+                System.out.println("categoria | porcentaje | \"categoria\" (realmente esta porque se esta usando datomat/ sobra) ");
                 System.out.println(resultado);
                 
+                System.out.println();
+                
                 System.out.println("\n\n\nresultado final : "+dif.encontrarResultado("precio",resultado));
+
                 
 	}
         
