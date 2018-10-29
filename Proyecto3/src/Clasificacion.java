@@ -76,14 +76,15 @@ public class Clasificacion {
     // consigue el centro de masa
     String getResultado(List<DatoMat> resultado) {
         float cm = 0;
-        System.out.println(resultado+"\n");
         for(int a = 0 ; a < resultado.size() ; a++)
         {
             float centro = getCentro(resultado.get(a).categorias.get(0) );
             float porcent = resultado.get(a).porcentaje;
-            System.out.println("centro figura : "+centro+" * "+porcent);
+            
             // multiplica el centro de la figura por su porcentaje
             cm += centro*porcent;
+
+            System.out.println("centro figura : +"+centro*porcent +"  =  "+cm );
         }
 
         System.out.println("centro de masa final : "+cm);

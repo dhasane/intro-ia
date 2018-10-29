@@ -1,18 +1,17 @@
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Scanner;
 
 
 public class Utils {
-    
     
     static void darValores(List<DatoMat> matriz, List<String> catRes)
     {
         System.out.println("categorias resultado dispunibles : ");
         for (int a = 0 ; a < catRes.size() ; a++)
         {
-            System.out.println(a+" "+catRes.get(a));
+            System.out.println(a+1+" "+catRes.get(a));
         }
         System.out.println("por favor digite el numero respectivo para la categoria deseada : ");
 
@@ -20,9 +19,16 @@ public class Utils {
         for(int a = 0 ; a < matriz.size() ; a++)
         {
             System.out.print(matriz.get(a)+" : ");
-            seleccion = leerTeclado(); // juju quedan encargados de esto tehee
+            seleccion = leerTeclado() -1; // juju quedan encargados de esto tehee
             matriz.get(a).setValor(catRes.get(seleccion));
         }
+    }
+
+    static int leerTeclado()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        //System.out.println();
+        return keyboard.nextInt();
     }
 
     static List<DatoMat> crearMatriz(List<List<DatoMat>> listas) {
