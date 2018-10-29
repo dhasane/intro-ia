@@ -85,18 +85,18 @@ public class test {
     static void ingresarADifusa(String nom) 
     {
         if (!dif.insertarClasificacion(nom)) {
-            System.out.println("valor ya insertado \n");
+            System.out.println("clasificacion ya existente \n");
         } else {
-            System.out.println("valor insertado \n");
+            System.out.println("clasificacion insertado exitosamente \n");
         }
     }
 
     static void ingresarClasifADifusa(String nom, String nomprt, float i, float it, float ft, float f) 
     {
         if (!dif.insertarAClasificacion(nom,nomprt,i,it,ft,f)) {
-            System.out.println("valor ya insertado \n");
+            System.out.println("categoria ya existente \n");
         } else {
-            System.out.println("valor insertado \n");
+            System.out.println("categoria insertada exitosamente \n");
         }
     }
 
