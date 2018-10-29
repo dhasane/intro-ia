@@ -22,9 +22,9 @@ public class Utils {
             
             seleccion = leerTeclado() -1; 
             
-            while(seleccion >= catRes.size())
+            while(seleccion >= catRes.size() || seleccion < 0)
             {
-                System.out.println("por favor ingrese un numero menor o igual a "+catRes.size()+", que es la cantidad de resultados finales posibles");
+                System.out.println("por favor ingrese un numero mayor a 0 y menor o igual a "+catRes.size()+", que es la cantidad de resultados finales posibles");
                 seleccion = leerTeclado() -1; 
             }
             matriz.get(a).setValor(catRes.get(seleccion));
