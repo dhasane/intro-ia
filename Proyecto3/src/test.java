@@ -21,7 +21,7 @@ public class test {
                 ingresarADifusa("azucar");
 		ingresarClasifADifusa("azucar","poco dulce",2,4,7,10);
 		ingresarClasifADifusa("azucar","medio dulce",6,10,15,18);
-		dingresarClasifADifusa("azucar","muy dulce",16,20,30,30);
+		ingresarClasifADifusa("azucar","muy dulce",16,20,30,30);
 
 
 		ingresarADifusa("leche");

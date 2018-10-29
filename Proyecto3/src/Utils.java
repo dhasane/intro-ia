@@ -19,7 +19,14 @@ public class Utils {
         for(int a = 0 ; a < matriz.size() ; a++)
         {
             System.out.print(matriz.get(a)+" : ");
-            seleccion = leerTeclado() -1; // juju quedan encargados de esto tehee
+            
+            seleccion = leerTeclado() -1; 
+            
+            while(seleccion >= catRes.size())
+            {
+                System.out.println("por favor ingrese un numero menor o igual a "+catRes.size()+", que es la cantidad de resultados finales posibles");
+                seleccion = leerTeclado() -1; 
+            }
             matriz.get(a).setValor(catRes.get(seleccion));
         }
     }
