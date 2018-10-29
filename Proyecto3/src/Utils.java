@@ -37,6 +37,13 @@ public class Utils {
         //System.out.println();
         return keyboard.nextInt();
     }
+    
+    static String leerTecladoString()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        //System.out.println();
+        return keyboard.nextLine();
+    }
 
     static List<DatoMat> crearMatriz(List<List<DatoMat>> listas) {
         List<DatoMat> matriz = new ArrayList<DatoMat>();

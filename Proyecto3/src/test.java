@@ -7,16 +7,70 @@ public class test {
         static Clasificacion CR;        // Categoria Resultado
 
 	public static void main(String[] args) {
+
 		dif = new Difusa();
                 
                 // ingreso categ res
                 // prefiero tener una buena diferenciacion entre las categ res y los datos
+                String nombreClasificacion = " ";
+                String nombreCategoria = " ";
+                int respuesta1, respuesta2;
+                boolean otraCategoria = true, otraClasificacion = true;
+                float valorInicio, valorFin, valorTinicio, valorTfin;
+                List< List<DatoMat> > listas = new ArrayList< List<DatoMat> >();
+                
+                
+                do{
+                    System.out.println("Ingresar nombre nueva categoria");
+                    nombreClasificacion = Utils.leerTecladoString();
+                    //Buscar si ya existe
+                    ingresarADifusa(nombreClasificacion);
+		    
+                    do{
+                        System.out.println(" Ingresar nueva clasificación para "+nombreClasificacion);
+                        nombreCategoria = Utils.leerTecladoString();
+                        System.out.println(" Inicio de "+nombreCategoria);
+                        valorInicio = Utils.leerTeclado();
+                        System.out.println(" Inicio arriba de "+nombreCategoria);
+                        valorTinicio = Utils.leerTeclado();
+                        System.out.println(" Fin arriba de "+nombreCategoria);
+                        valorTfin = Utils.leerTeclado();
+                        System.out.println(" Fin de "+nombreCategoria);
+                        valorFin = Utils.leerTeclado();
+                        
+                        ingresarClasifADifusa(nombreClasificacion,nombreCategoria,valorInicio,valorTinicio,valorTfin,valorFin);
+
+                        System.out.println("¿Otra categoria ?(1| 0)");
+                        respuesta1 = Utils.leerTeclado();
+                        if(respuesta1 == 1 ){
+                            otraClasificacion = true;
+                        }
+                        else{
+                            otraClasificacion = false;
+                        }
+
+                    }while(otraClasificacion);
+                    
+                    System.out.println("¿Otra clasificación ?(1| 0)");
+                    respuesta2 = Utils.leerTeclado();
+                    if(respuesta2 == 1 ){
+                        otraCategoria = true;
+                    }
+                    else{
+                        otraCategoria = false;
+                    }
+                }while(otraCategoria);
+                    
+                    
+                
+                
+                
                 CR = new Clasificacion("precio");
                 CR.insertarPertenencia("clase obrera",1,4,6,10);
                 CR.insertarPertenencia("normal",7,12,15,18);
                 CR.insertarPertenencia("elite superior alfas",16,20,30,30);
 
-
+/*
                 // ingreso datos
                 ingresarADifusa("azucar");
 		ingresarClasifADifusa("azucar","poco dulce",2,4,7,10);
@@ -33,8 +87,13 @@ public class test {
                 ingresarADifusa("cafe");
 		ingresarClasifADifusa("cafe","claro",1,7,10,20);
                 ingresarClasifADifusa("cafe","oscuro",12,18,24,30);
-                       
                 
+                */
+                
+                System.out.println("Ingrese lo que desea\n");
+                String cadena = Utils.leerTecladoString();
+                System.out.println(">"+cadena);
+                    
                 System.out.print("\n" + "------------------------------------\n");
 		dif.imprimir();
                 
@@ -53,7 +112,7 @@ public class test {
 		System.out.print( "\n\ncategorias resultado "  +  (catResultado) + "\n");
 		System.out.print("\n" + "------------------------------------\n");
 
-		List< List<DatoMat> > listas = new ArrayList< List<DatoMat> >();
+		
 
 		listas.add(AZ);
 		listas.add(LE);
