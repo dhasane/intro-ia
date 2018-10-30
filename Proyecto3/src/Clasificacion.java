@@ -23,6 +23,7 @@ public class Clasificacion {
     boolean insertarPertenencia(String nom, float i, float it, float ft, float f) {
         Pertenencia npert = new Pertenencia(nom, i, it, ft, f);
         this.pert.add(npert);
+        //System.out.println(npert);
         return true;
     }
 
@@ -88,6 +89,8 @@ public class Clasificacion {
         }
 
         System.out.println("centro de masa final : "+cm);
+
+        
         return Utils.conseguirMayor(fuzzy(cm)).categorias.get(0);
     }
 

@@ -14,11 +14,21 @@ public class Difusa {
     // fuzzyfica una Clasificacion especifica con un valor dado
     List<DatoMat> fuzzy(String nom, float val) {
         for (int a = 0; a < this.clasif.size(); a++) {
-            if (this.clasif.get(a).getNombre() == nom) {
+            if (this.clasif.get(a).getNombre().equals(nom)) {
                 return this.clasif.get(a).fuzzy(val);
             }
         }
         return null;
+    }
+
+    boolean catPresente(String nom)
+    {
+        for (int a = 0; a < this.clasif.size(); a++) {
+            if (this.clasif.get(a).getNombre().equals(nom)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // crea una nueva Clasificacion, a la que solo le da nombre, 
@@ -26,7 +36,7 @@ public class Difusa {
     boolean insertarClasificacion(String nom) {
         boolean found = false;
         for (int a = 0; a < this.clasif.size(); a++) {
-            if (this.clasif.get(a).getNombre() == nom) {
+            if (this.clasif.get(a).getNombre().equals(nom)) {
                 found = true;
             }
         }
@@ -42,7 +52,7 @@ public class Difusa {
     // retorna true, en caso de poder insertar la Pertenencia
     boolean insertarAClasificacion(String nom, String nomprt, float i, float it, float ft, float f) {
         for (int a = 0; a < this.clasif.size(); a++) {
-            if (this.clasif.get(a).getNombre() == nom) {
+            if (this.clasif.get(a).getNombre().equals(nom)) {
                 return this.clasif.get(a).insertarPertenencia(nomprt, i, it, ft, f);
             }
         }
@@ -59,7 +69,7 @@ public class Difusa {
     // funcion como por jugar, el nombre ya lo describe
     float quieroAlgoEntre(String nom, String val1, String val2) {
         for (int a = 0; a < this.clasif.size(); a++) {
-            if (this.clasif.get(a).getNombre() == nom) {
+            if (this.clasif.get(a).getNombre().equals(nom)) {
                 return (this.clasif.get(a).getCentro(val1) + this.clasif.get(a).getCentro(val2)) / 2;
             }
         }
@@ -70,7 +80,7 @@ public class Difusa {
     // de una Clasificacion especifica
     float conseguirValor(String nom, String val) {
         for (int a = 0; a < this.clasif.size(); a++) {
-            if (this.clasif.get(a).getNombre() == nom) {
+            if (this.clasif.get(a).getNombre().equals(nom)) {
                 return this.clasif.get(a).getCentro(val);
             }
         }
@@ -80,7 +90,7 @@ public class Difusa {
 
     List<String> getCategorias(String nom) {
         for (int a = 0; a < this.clasif.size(); a++) {
-            if (this.clasif.get(a).getNombre() == nom) {
+            if (this.clasif.get(a).getNombre().equals(nom)) {
                 return this.clasif.get(a).getCategorias();
             }
         }
