@@ -10,31 +10,6 @@ public class finala {
 		dif = new Difusa();
                 
                 // ingreso categ res
-                // prefiero tener una buena diferenciacion entre las categ res y los datos
-                /*CR = new Clasificacion("precio");
-                CR.insertarPertenencia("clase obrera",1,4,6,10);
-                CR.insertarPertenencia("normal",7,12,15,18);
-                CR.insertarPertenencia("elite superior alfas",16,20,30,30);
-
-
-                // ingreso datos
-                ingresarADifusa("azucar");
-		ingresarClasifADifusa("azucar","poco dulce",2,4,7,10);
-		ingresarClasifADifusa("azucar","medio dulce",6,10,15,18);
-		ingresarClasifADifusa("azucar","muy dulce",16,20,30,30);
-
-
-		ingresarADifusa("leche");
-		ingresarClasifADifusa("leche","fria",3,5,7,16);
-                ingresarClasifADifusa("leche","tibia",8,17,20,22);
-                ingresarClasifADifusa("leche","caliente",16,20,26,30);
-                
-                
-                ingresarADifusa("cafe");
-		ingresarClasifADifusa("cafe","claro",1,7,10,20);
-                ingresarClasifADifusa("cafe","oscuro",12,18,24,30);
-                       
-                */
                 CR = new Clasificacion("velocidadObj");
                 CR.insertarPertenencia("frenar",0,10,20,30);
                 CR.insertarPertenencia("seguir",20,30,40,50);
@@ -51,31 +26,35 @@ public class finala {
 
 
                 ingresarADifusa("distanciaObj");
-                ingresarClasifADifusa("distanciaObj","cerca",5,5,7,10);
+                ingresarClasifADifusa("distanciaObj","cerca",1,5,7,10);
                 ingresarClasifADifusa("distanciaObj","medio",7,15,20,25);
                 ingresarClasifADifusa("distanciaObj","lejos",22,27,400,500);
 
 
                 System.out.print("\n" + "------------------------------------\n");
-		dif.imprimir();
+		        dif.imprimir();
                 
                 System.out.print("\n" + "------------------------------------\n");
                 
                 
 
-		List< String > catResultado = CR.getCategorias();
-		
-		List< List<DatoMat> > listas = new ArrayList< List<DatoMat> >();
+                List< String > catResultado = CR.getCategorias();
                 
-                float dist = 15;
-                float vel  = 100;
+                List< List<DatoMat> > listas = new ArrayList< List<DatoMat> >();
+                
+                System.out.print("ingrese un valor para velocidad entre 1 y 20 : ");
+                float vel  = Utils.leerFlTeclado();
+
+                System.out.print("ingrese un valor para distancia al objeto entre 1 y 500 : ");
+
+                float dist = Utils.leerFlTeclado();
 		
                 // evaluacion de las categ
-                listas.add(dif.fuzzy("velocidadAct", 10));
-		listas.add(dif.fuzzy("distanciaObj", 15));
+                listas.add(dif.fuzzy("velocidadAct", vel));
+		        listas.add(dif.fuzzy("distanciaObj", dist));
 
 
-		List<DatoMat> Mat = Utils.crearMatriz(listas);
+		        List<DatoMat> Mat = Utils.crearMatriz(listas);
                 
                 // se le da valores a cada situacion, o como se quiera llamar
                 Utils.darValores(Mat,catResultado);

@@ -86,10 +86,10 @@ public class Clasificacion {
             // multiplica el centro de la figura por su porcentaje
             cm += centro*porcent;
 
-            System.out.println("centro figura : +"+centro*porcent +"  =  "+cm );
+            //System.out.println("centro figura : +"+centro*porcent +"  =  "+cm );
         }
 
-        System.out.println("centro de masa final : "+cm);
+        //System.out.println("centro de masa final : "+cm);
 
         
         return Utils.conseguirMayor(fuzzy(cm)).categorias.get(0);

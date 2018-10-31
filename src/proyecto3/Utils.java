@@ -37,6 +37,13 @@ public class Utils {
         //System.out.println();
         return keyboard.nextInt();
     }
+
+    static float leerFlTeclado()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        //System.out.println();
+        return keyboard.nextFloat();
+    }
     
     static String leerTecladoString()
     {
