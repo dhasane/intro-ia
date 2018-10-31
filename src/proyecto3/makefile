@@ -7,10 +7,10 @@ _: compile run1 clean
 compile:
 	javac *.java
 
-run1: 
+run2: 
 	java test		#todas las opciones por parte del usuario
 
-run2: 
+run1: 
 	java finala		#algunas opc por prog y las otras por usuario
 
 clean:

@@ -43,17 +43,17 @@ public class finala {
 
                 // ingreso datos
                 ingresarADifusa("velocidadAct");
-                ingresarClasifADifusa("velocidadAct","lento",1,20,30,40);
-                ingresarClasifADifusa("velocidadAct","medio",30,48,60,70);
-                ingresarClasifADifusa("velocidadAct","rapido",60,80,110,120);
-                ingresarClasifADifusa("velocidadAct","super_rapido",110,130,190,200);
+                ingresarClasifADifusa("velocidadAct","lento",1,2,3,4);
+                ingresarClasifADifusa("velocidadAct","medio",3,4,6,7);
+                ingresarClasifADifusa("velocidadAct","rapido",6,8,11,12);
+                ingresarClasifADifusa("velocidadAct","super_rapido",11,13,19,20);
                 
 
 
                 ingresarADifusa("distanciaObj");
                 ingresarClasifADifusa("distanciaObj","cerca",5,5,7,10);
                 ingresarClasifADifusa("distanciaObj","medio",7,15,20,25);
-                ingresarClasifADifusa("distanciaObj","lejos",3,5,7,16);
+                ingresarClasifADifusa("distanciaObj","lejos",22,27,400,500);
 
 
                 System.out.print("\n" + "------------------------------------\n");
@@ -66,10 +66,12 @@ public class finala {
 		List< String > catResultado = CR.getCategorias();
 		
 		List< List<DatoMat> > listas = new ArrayList< List<DatoMat> >();
-
+                
+                float dist = 15;
+                float vel  = 100;
 		
                 // evaluacion de las categ
-                listas.add(dif.fuzzy("velocidadAct", 9));
+                listas.add(dif.fuzzy("velocidadAct", 10));
 		listas.add(dif.fuzzy("distanciaObj", 15));
 
 
