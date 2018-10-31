@@ -42,13 +42,14 @@ public class test {
         boolean salir = false;
         
         int tam = 0;
+        float val =0;
         while(!salir)
         {
             System.out.print("\n" + "------------------------------------\n");
             pos = 0;
             System.out.print("> ");
             opcion = Utils.leerTecladoString().split(" ");
-
+            
             if(opcion[pos].equals("help"))
             {
                 System.out.println("imprimir");
@@ -59,6 +60,7 @@ public class test {
                 System.out.println("ingresar subcat");
                 System.out.println("resultado");
                 System.out.println("(categoria) entre (subcat) (subcat2)");
+                System.out.println("quiero (categoria)(subcat)");
             }
             else if(opcion[pos].equals("imprimir"))
             {
@@ -70,6 +72,7 @@ public class test {
 
                 System.out.println("preferencias : ");
                 System.out.println(listas+"---------");
+                
             }
             else if(opcion[pos].equals("salir"))
             {
@@ -77,6 +80,9 @@ public class test {
             }
             else if(opcion[pos].equals("resultado"))
             {
+                if(listas.size()>0){
+                    catresing = true;
+                }
                 if(catresing && listas.size() > 0 && CR != null)
                 {
                     encontrarResultado(listas,CR);
@@ -160,12 +166,49 @@ public class test {
                 {
                     System.out.println(dif.getCategorias(opcion[0]));
 
-                    float val = dif.quieroAlgoEntre(opcion[0], opcion[2], opcion[3]);
+                    val = dif.quieroAlgoEntre(opcion[0], opcion[2], opcion[3]);
                     System.out.println("valor es : "+val);
                     ingresarFuzzy(opcion[0],val);
                 }
                 
             }
+            else if(opcion.length == 3 && opcion[0].equals("quiero"))
+            {
+                if(dif.catPresente(opcion[1]))
+                {
+                    System.out.println(dif.getCategorias(opcion[1]));
+
+                    val = dif.quiero(opcion[1],opcion[2]);
+                    System.out.println("valor es : "+val);
+                    ingresarFuzzy(opcion[1],val);
+                }
+                
+            }
+            /*
+            else if(opcion.length == 2 && opcion[0].equals("mas"))
+            {
+                if(dif.catPresente(opcion[1]))
+                {
+                    System.out.println(dif.getCategorias(opcion[1]));
+
+                    val = val + (1/2);
+                    System.out.println("valor es : "+val);
+                    ingresarFuzzyYaIngresado(opcion[1],val);
+                }
+                
+            }
+            else if(opcion.length == 2 && opcion[0].equals("menos"))
+            {
+                if(dif.catPresente(opcion[1]))
+                {
+                    System.out.println(dif.getCategorias(opcion[1]));
+
+                    val = val - (1/2);
+                    System.out.println("valor es : "+val);
+                    ingresarFuzzyYaIngresado(opcion[1],val);
+                }
+                
+            } */
         }
     }
 
@@ -211,6 +254,22 @@ public class test {
     static void ingresarFuzzy(String cat, float val)
     {
         listas.add(dif.fuzzy(cat, val));
+        
+    }
+    
+    static void ingresarFuzzyYaIngresado(String cat, float val)
+    {
+       /* System.out.println("cat"+cat);
+        for(int i=0; i<listas.size(); i++){
+            System.out.println("test.ingresarFuzzyYaIngresado()<<<<"+ listas.get(i).get(i).getValor());
+            System.out.println("test.ingresarFuzzyYaIngresado()<<<<"+ listas.get(i).get(i).categorias+listas.size());
+            if(listas.get(i).get(i).categorias.get(i).equals(cat)){
+                listas.remove(i);
+                System.out.println("test.ingresarFuzzyYaIngresado() yyy"+ listas.size());
+            }
+        } */
+        listas.add(dif.fuzzy(cat, val));
+        
     }
 
         // se preguntaran "Hamilton, pero para que hiciste estas funciones si es basicamente

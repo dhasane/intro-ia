@@ -81,6 +81,18 @@ public class Difusa {
         }
         return 0;
     }
+    
+    float quiero(String nom, String val1) {
+        for (int a = 0; a < this.clasif.size(); a++) {
+            if (this.clasif.get(a).getNombre().equals(nom)) {
+
+                float v1 = this.clasif.get(a).getCentro(val1);
+                System.out.println(v1);
+                return v1;
+            }
+        }
+        return 0;
+    }
 
     // consigue el getCentro de una Pertenencia especifica,
     // de una Clasificacion especifica

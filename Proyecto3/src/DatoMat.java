@@ -80,7 +80,10 @@ public class DatoMat {
    public String getValor(){
        return valor;
    }//*/
-
+   
+   public List<String> getCategorias(){
+       return categorias;
+   }//*/
     void modificarProbabilidad(float porcentaje) {
         this.porcentaje = porcentaje;
     }

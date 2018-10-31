@@ -19,7 +19,7 @@ public class testt {
                 float valorInicio, valorFin, valorTinicio, valorTfin;
                 List< List<DatoMat> > listas = new ArrayList< List<DatoMat> >();
                 
-                
+      /*          
                 do{
                     System.out.println("Ingresar nombre nueva categoria");
                     nombreClasificacion = Utils.leerTecladoString();
@@ -62,7 +62,7 @@ public class testt {
                 }while(otraCategoria);
                     
                     
-                
+           */     
                 
                 
                 CR = new Clasificacion("precio");
@@ -70,7 +70,7 @@ public class testt {
                 CR.insertarPertenencia("normal",7,12,15,18);
                 CR.insertarPertenencia("elite superior alfas",16,20,30,30);
 
-/*
+
                 // ingreso datos
                 ingresarADifusa("azucar");
 		ingresarClasifADifusa("azucar","poco dulce",2,4,7,10);
@@ -88,7 +88,7 @@ public class testt {
 		ingresarClasifADifusa("cafe","claro",1,7,10,20);
                 ingresarClasifADifusa("cafe","oscuro",12,18,24,30);
                 
-                */
+                
                 
                 System.out.println("Ingrese lo que desea\n");
                 String cadena = Utils.leerTecladoString();
