@@ -15,7 +15,7 @@ public class test {
 
     static boolean catresing;       // categoria res ingresada
 
-	public static void main() {
+	public static void main(String[] args) {
         catresing = false;
 		    dif = new Difusa();
         listas = new ArrayList< List<DatoMat> >();
