@@ -70,7 +70,13 @@ public class Difusa {
     float quieroAlgoEntre(String nom, String val1, String val2) {
         for (int a = 0; a < this.clasif.size(); a++) {
             if (this.clasif.get(a).getNombre().equals(nom)) {
-                return (this.clasif.get(a).getCentro(val1) + this.clasif.get(a).getCentro(val2)) / 2;
+
+                float v1 = this.clasif.get(a).getCentro(val1);
+                float v2 = this.clasif.get(a).getCentro(val2);
+
+                float prom = v1 + v2 / 2;
+                System.out.println(v1 +"      "+ v2 + "     ="+prom);
+                return prom;
             }
         }
         return 0;

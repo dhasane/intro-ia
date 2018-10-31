@@ -56,8 +56,9 @@ public class Clasificacion {
 
     // retorna el Centro de la Pertenencia
     float getCentro(String val) {
+
         for (int a = 0; a < this.pert.size(); a++) {
-            if (this.pert.get(a).getNombre() == val) {
+            if (this.pert.get(a).getNombre().equals(val)) {
                 return (this.pert.get(a).getCentro());
             }
         }

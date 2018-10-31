@@ -19,14 +19,14 @@ public class test {
         catresing = false;
 		dif = new Difusa();
         listas = new ArrayList< List<DatoMat> >();
-
+        CR = null;
 
         menu();
 
                 // evaluacion de las categ
-                ingresarFuzzy("azucar", 9);
-                ingresarFuzzy("leche", 15);
-                ingresarFuzzy("cafe", 20);
+                //ingresarFuzzy("azucar", 9);
+                //ingresarFuzzy("leche", 15);
+                //ingresarFuzzy("cafe", 20);
                 
 		        
 		        
@@ -49,10 +49,10 @@ public class test {
             System.out.print("> ");
             opcion = Utils.leerTecladoString().split(" ");
 
-            
             if(opcion[pos].equals("help"))
             {
                 System.out.println("imprimir");
+                System.out.println("salir");
                 System.out.println("ingresar catres (nombre cat)");
                 System.out.println("ingresar subcatres");
                 System.out.println("ingresar categoria (nombre cat)");
@@ -62,13 +62,24 @@ public class test {
             }
             else if(opcion[pos].equals("imprimir"))
             {
+                System.out.println("categoria resultado : ");
+                if (CR != null) CR.imprimir();
+
+                System.out.println("categorias : ");
                 dif.imprimir();
+
+                System.out.println("preferencias : ");
+                System.out.println(listas+"---------");
+            }
+            else if(opcion[pos].equals("salir"))
+            {
+                salir = true;
             }
             else if(opcion[pos].equals("resultado"))
             {
-                if(catresing && listas.size() > 0)
+                if(catresing && listas.size() > 0 && CR != null)
                 {
-                    encontrarResultado();
+                    encontrarResultado(listas,CR);
                 }
                 else
                 {
@@ -147,7 +158,11 @@ public class test {
             {
                 if(dif.catPresente(opcion[0]))
                 {
-                    dif.quieroAlgoEntre(opcion[0], opcion[2], opcion[3]);
+                    System.out.println(dif.getCategorias(opcion[0]));
+
+                    float val = dif.quieroAlgoEntre(opcion[0], opcion[2], opcion[3]);
+                    System.out.println("valor es : "+val);
+                    ingresarFuzzy(opcion[0],val);
                 }
                 
             }
@@ -165,11 +180,17 @@ public class test {
         return opcion;
     }
 
-    static void encontrarResultado()
+    static void encontrarResultado(List< List<DatoMat> > listas,Clasificacion CR)
     {
+
         List<DatoMat> Mat = Utils.crearMatriz(listas);
         
+        System.out.println(Mat+"---------");
         List< String > catResultado = CR.getCategorias();
+
+        System.out.println(catResultado+"---------");
+
+
         // se le da valores a cada situacion, o como se quiera llamar
         Utils.darValores(Mat,catResultado);
                 
