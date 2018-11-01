@@ -11,9 +11,9 @@ public class finala {
                 
                 // ingreso categ res
                 CR = new Clasificacion("velocidadObj");
-                CR.insertarPertenencia("frenar",0,10,20,30);
-                CR.insertarPertenencia("seguir",20,30,40,50);
-                CR.insertarPertenencia("acelerar",40,50,60,70);
+                CR.insertarPertenencia("frenar",0,3,5,10);
+                CR.insertarPertenencia("seguir",8,10,20,25);
+                CR.insertarPertenencia("acelerar",22,25,30,80);
 
 
                 // ingreso datos
@@ -31,8 +31,12 @@ public class finala {
                 ingresarClasifADifusa("distanciaObj","lejos",22,27,400,500);
 
 
+
                 System.out.print("\n" + "------------------------------------\n");
-		        dif.imprimir();
+		        
+                CR.imprimir();
+                
+                dif.imprimir();
                 
                 System.out.print("\n" + "------------------------------------\n");
                 
@@ -50,6 +54,7 @@ public class finala {
                 float dist = Utils.leerFlTeclado();
 		
                 // evaluacion de las categ
+
                 listas.add(dif.fuzzy("velocidadAct", vel));
 		        listas.add(dif.fuzzy("distanciaObj", dist));
 
@@ -71,6 +76,7 @@ public class finala {
 
                 // se consigue el resultado final
                 System.out.println("\n\n\nresultado final : "+CR.getResultado(resultado) );
+
                
 	}
         

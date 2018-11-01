@@ -44,9 +44,11 @@ public class Clasificacion {
         List<DatoMat> resultados = new ArrayList<DatoMat>();
         float eval = 0;
         DatoMat dm;
+        
         for (int a = 0; a < this.pert.size(); a++) {
             eval = this.pert.get(a).evaluar(val);
 
+            System.out.println(this.pert.get(a).getNombre()+ "   %: " + eval);
             dm = new DatoMat(this.pert.get(a).getNombre(), eval);
 
             resultados.add(dm);
@@ -75,6 +77,7 @@ public class Clasificacion {
         return cat;
     }
 
+    /*
     // consigue el centro de masa
     String getResultado(List<DatoMat> resultado) {
         float cm = 0;
@@ -86,13 +89,70 @@ public class Clasificacion {
             // multiplica el centro de la figura por su porcentaje
             cm += centro*porcent;
 
-            //System.out.println("centro figura : +"+centro*porcent +"  =  "+cm );
+            System.out.println("centro figura : +"+centro*porcent +"  =  "+cm );
         }
 
-        //System.out.println("centro de masa final : "+cm);
+        System.out.println( "centro de masa final : "+cm);
+
+        System.out.println( Utils.conseguirMayorLista( resultado  ) );
+        
+        System.out.println( Utils.conseguirMayor(fuzzy(cm)).categorias.get(0) );
+
+        return Utils.conseguirMayor( fuzzy(cm)).categorias.get(0);
+    }*/
+
+    String getResultado(List<DatoMat> resultado) {
+        float cm = 0;
+        for(int a = 0 ; a < resultado.size() ; a++)
+        {
+            float centro = getCentro(resultado.get(a).categorias.get(0) );
+            float porcent = resultado.get(a).porcentaje;
+            
+            // multiplica el centro de la figura por su porcentaje
+            cm += centro*porcent;
+
+            System.out.println("centro figura : +"+centro*porcent +"  =  "+cm );
+        }
+
+        System.out.println( "centro de masa parcial : "+cm);
+
+        Pertenencia dmmax = null;
+        float valmax = 0;
+        float valtotal = 0;
+
+
+
+        for(int a = 0 ; a < resultado.size() ; a++)
+        {
+            valtotal += this.pert.get(a).evaluar(cm);
+        }
+
+        cm = cm / valtotal;
+
+        for(int a = 0 ; a < resultado.size() ; a++)
+        {
+            float temp = this.pert.get(a).evaluar(cm);
+            if(a == 0)
+            {
+                dmmax = this.pert.get(a);
+                valmax = temp;
+            }
+            else
+            {
+                if(valmax < temp)
+                {
+                    dmmax = this.pert.get(a);
+                    valmax = temp;
+                }
+            }
+        }
 
         
-        return Utils.conseguirMayor(fuzzy(cm)).categorias.get(0);
+        System.out.println( "centro de masa final : "+cm);
+        
+        //return Utils.conseguirMayor( fuzzy(cm)).categorias.get(0);//*/
+
+        return dmmax.getNombre();
     }
 
 }

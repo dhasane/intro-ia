@@ -88,11 +88,7 @@ public class Utils {
 
         DatoMat inicio = new DatoMat();
         float porcen = 0;
-        /*
-        System.out.println("Difusa.crearMatriz() " + res.get(0));
-        System.out.println("Difusa.crearMatriz() " + res.get(1));
-        System.out.println("Difusa.crearMatriz() " + res.get(2));
-        */
+        
         for (int i = 0; i < res.size(); i++) 
         {
             porcen = 0;
@@ -100,6 +96,7 @@ public class Utils {
             {
                 if (Mat.get(j).getValor() == res.get(i)) 
                 {
+                    System.out.println(res.get(i)+ "   -- " + "max:" +porcen+  " " + "act : " +Mat.get(j).porcentaje);
                     if (porcen < Mat.get(j).porcentaje) 
                     {
                         porcen = Mat.get(j).porcentaje;
@@ -290,12 +287,23 @@ public class Utils {
 */
     static DatoMat conseguirMayor(List<DatoMat> datos) {
         DatoMat dm = null;
-        for (int a = 0; a < datos.size(); a++) {
-            if (a == 0) {
+        float porcm = 0;
+        for (int a = 0; a < datos.size(); a++) 
+        {
+            if (a == 0) 
+            {
                 dm = datos.get(a);
-            } else {
-                if (dm.porcentaje < datos.get(a).porcentaje) {
+                porcm = dm.porcentaje;
+                System.out.println("porc: "+ porcm);
+            } 
+            else 
+            {
+               //System.out.println("porc: "+ porcm*100+ " vs "+ datos.get(a).porcentaje*100);
+                if (porcm < datos.get(a).porcentaje) 
+                {
+                
                     dm = datos.get(a);
+                    
                 }
             }
         }
